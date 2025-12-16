@@ -1,5 +1,5 @@
 <template>
-  <div class="screen">
+  <div class="screen"  :style="{ height: pageHeight + 'px' }">
     <!-- 紧凑型 Header -->
     <header class="header">
       <div class="header-content">
@@ -136,7 +136,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, onMounted ,onUnmounted} from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseMaybeJSON, parseNumber } from "@/utils/parse"
@@ -455,6 +455,21 @@ function renderIssueTrend() {
     }]
   })
 }
+const pageHeight = ref(window.innerHeight)
+// 更新页面高度
+const updatePageHeight = () => {
+  pageHeight.value = window.innerHeight
+  console.log('页面高度更新为：', pageHeight.value)
+}
+
+// 监听窗口大小变化
+onMounted(() => {
+  window.addEventListener('resize', updatePageHeight)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updatePageHeight)
+})
 </script>
 <style scoped>
 .screen {
@@ -464,13 +479,14 @@ function renderIssueTrend() {
     radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
     linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
   width: 100%;
-  height: 97vh;
+  /* height: 97vh; */
   padding: 15px;
   color: #fff;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box  ;
 }
 
 .screen::before {

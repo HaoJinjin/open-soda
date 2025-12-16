@@ -1,5 +1,5 @@
 <template>
-  <div class="prediction-page">
+  <div class="prediction-page" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
       <h1 class="page-title">🔮 智能预测</h1>
       <p class="page-subtitle">Machine Learning Prediction - 基于随机森林的指标预测</p>
@@ -130,13 +130,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
 
 const selectedColumn = ref('')
 const loading = ref(false)
 const error = ref('')
 const predictionResult = ref<any>(null)
+const pageHeight = ref(window.innerHeight)
 
 // 可用的列（根据你的数据集）
 const availableColumns = [
@@ -167,11 +168,28 @@ const startPrediction = async () => {
     loading.value = false
   }
 }
+
+// 更新页面高度
+const updatePageHeight = () => {
+  pageHeight.value = window.innerHeight
+  console.log('页面高度更新为：', pageHeight.value)
+}
+
+// 监听窗口大小变化
+onMounted(() => {
+  window.addEventListener('resize', updatePageHeight)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updatePageHeight)
+})
 </script>
 
 <style scoped>
 .prediction-page {
   width: 100%;
+  display: flex;
+  flex-direction: column;
   background: #000000;
   background-image:
     radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
@@ -181,7 +199,26 @@ const startPrediction = async () => {
   color: #fff;
   overflow-y: auto;
   position: relative;
-  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+.prediction-page::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prediction-page::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.prediction-page::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 254, 0.3);
+  border-radius: 3px;
+}
+
+.prediction-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 254, 0.5);
 }
 
 .prediction-page::before {
