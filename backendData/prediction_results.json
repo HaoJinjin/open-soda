@@ -1,7 +1,8 @@
 {
     "metadata": {
-        "target_column": "activity",
+        "target_column": "stars",
         "feature_columns": [
+            "feat_activity",
             "feat_attention",
             "feat_bus_factor",
             "feat_change_requests",
@@ -19,7 +20,6 @@
             "feat_new_contributors",
             "feat_openrank",
             "feat_participants",
-            "feat_stars",
             "feat_technical_fork"
         ],
         "total_samples": 300,
@@ -27,9 +27,9 @@
         "train_samples": 210,
         "test_samples": 90,
         "metrics": {
-            "R2_score": 1.0,
-            "RMSE": "0.00e+00",
-            "MAE": "0.00e+00"
+            "R2_score": -0.0517,
+            "RMSE": "9.91e+08",
+            "MAE": "1.35e+08"
         }
     },
     "predictions": [
@@ -134,9 +134,9 @@
         {
             "project_name": "macports",
             "true_value": "1970-01-01 08:00:00",
-            "predicted_value": "1970-01-01 08:00:00",
-            "absolute_error": 0.0,
-            "relative_error_percent": 0.0
+            "predicted_value": -184467440.74,
+            "absolute_error": 184467440.74,
+            "relative_error_percent": 1.8446744074e+18
         },
         {
             "project_name": "open-mmlab",
@@ -168,17 +168,17 @@
         },
         {
             "project_name": "idsb3t1",
-            "true_value": "1970-01-01 08:00:00",
-            "predicted_value": "1970-01-01 08:00:00",
-            "absolute_error": 0.0,
-            "relative_error_percent": 0.0
+            "true_value": -9223372037.0,
+            "predicted_value": -184467440.74,
+            "absolute_error": 9038904596.26,
+            "relative_error_percent": 98.0
         },
         {
             "project_name": "archway-network",
             "true_value": "1970-01-01 08:00:00",
-            "predicted_value": "1970-01-01 08:00:00",
-            "absolute_error": 0.0,
-            "relative_error_percent": 0.0
+            "predicted_value": -2582544170.36,
+            "absolute_error": 2582544170.36,
+            "relative_error_percent": 2.58254417036e+19
         },
         {
             "project_name": "dotnet",
@@ -274,9 +274,9 @@
         {
             "project_name": "nrfconnect",
             "true_value": "1970-01-01 08:00:00",
-            "predicted_value": "1970-01-01 08:00:00",
-            "absolute_error": 0.0,
-            "relative_error_percent": 0.0
+            "predicted_value": -184467440.74,
+            "absolute_error": 184467440.74,
+            "relative_error_percent": 1.8446744074e+18
         },
         {
             "project_name": "electron",
@@ -309,9 +309,9 @@
         {
             "project_name": "apache",
             "true_value": "1970-01-01 08:00:00",
-            "predicted_value": "1970-01-01 08:00:00",
-            "absolute_error": 0.0,
-            "relative_error_percent": 0.0
+            "predicted_value": -184467440.74,
+            "absolute_error": 184467440.74,
+            "relative_error_percent": 1.8446744074e+18
         },
         {
             "project_name": "cloudflare",
