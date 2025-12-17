@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
-from fork_pridiction import predict_target_column
+from backend.fork_prediction import predict_target_column
 
 app = FastAPI()
 
