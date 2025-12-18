@@ -53,6 +53,21 @@ const routes: Array<RouteRecordRaw> = [
         path: 'prediction',
         name: 'prediction',
         component: ()=>import('@/views/Prediction.vue'),
+      },
+      {
+        path: 'fork-prediction',
+        name: 'forkPrediction',
+        component: ()=>import('@/views/ForkPrediction.vue'),
+      },
+      {
+        path: 'indicator-statistics',
+        name: 'indicatorStatistics',
+        component: ()=>import('@/views/IndicatorStatistics.vue'),
+      },
+      {
+        path: 'response-time-prediction',
+        name: 'responseTimePrediction',
+        component: ()=>import('@/views/ResponseTimePrediction.vue'),
       }
     ]
   }

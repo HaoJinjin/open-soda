@@ -47,7 +47,9 @@ const menus: Menu[] = [
   { key: "issue", title: "Issue 生命周期" },
   { key: "code", title: "PR & 代码变更" },
   { key: "community", title: "社区关注度" },
-  { key: "prediction", title: "🔮 智能预测" }
+  { key: "fork-prediction", title: "🔱 Fork 预测" },
+  { key: "indicator-statistics", title: "📊 指标统计" },
+  { key: "response-time-prediction", title: "⏱️ 响应时间预测" }
 ]
 
 function selectMenu(m: Menu) {
@@ -75,8 +77,14 @@ function selectMenu(m: Menu) {
     case "community":
       router.push({ name: "community" })
       break
-    case "prediction":
-      router.push({ name: "prediction" })
+    case "fork-prediction":
+      router.push({ name: "forkPrediction" })
+      break
+    case "indicator-statistics":
+      router.push({ name: "indicatorStatistics" })
+      break
+    case "response-time-prediction":
+      router.push({ name: "responseTimePrediction" })
       break
     default:
       router.push({ name: "showBoard" })
