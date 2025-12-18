@@ -56,7 +56,7 @@ heatmap = sns.heatmap(
 
 plt.title('6个核心指标相关性热力图', fontsize=14, fontweight='bold', pad=20)
 plt.tight_layout()
-plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData', dpi=100, bbox_inches='tight')
+plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData\indicators_heatmap.png', dpi=100, bbox_inches='tight')
 plt.close()
 print("✓ 热力图已保存：indicators_heatmap.png")
 
@@ -98,7 +98,7 @@ for idx, (indicator, ax) in enumerate(zip(target_indicators, axes.flatten())):
     ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
-plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData', dpi=100, bbox_inches='tight')
+plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData\indicators_distribution.png', dpi=100, bbox_inches='tight')
 plt.close()
 
 # 方案2：项目维度的Top10对比柱状图（横向堆叠）
@@ -127,7 +127,7 @@ plt.title('Top10项目 6个核心指标对比（标准化）', fontsize=14, font
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.grid(True, alpha=0.3, axis='x')
 plt.tight_layout()
-plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData', dpi=100, bbox_inches='tight')
+plt.savefig(r'C:\Users\22390\Desktop\OpenSODA\backendData\top10_comparison.png', dpi=100, bbox_inches='tight')
 plt.close()
 
 # ==================== 4. 生成JSON格式统计信息（核心修改） ====================

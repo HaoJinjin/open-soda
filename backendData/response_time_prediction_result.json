@@ -1,0 +1,160 @@
+{
+    "metadata": {
+        "data_source": "top_300_metrics.csv",
+        "target_metric": "change_request_response_time",
+        "total_projects": 300,
+        "valid_samples": 18426,
+        "feature_columns": [
+            "year",
+            "month",
+            "quarter",
+            "month_order",
+            "is_quarter_end",
+            "is_year_end",
+            "is_peak_season",
+            "month_sin",
+            "month_cos",
+            "response_time_ma_3",
+            "response_time_ma_6",
+            "response_time_std_3",
+            "response_time_std_6",
+            "response_time_diff_1",
+            "response_time_lag_1",
+            "response_time_lag_2"
+        ],
+        "best_model": "XGBoost"
+    },
+    "model_evaluation": {
+        "线性回归": {
+            "r2_train": 0.9905,
+            "r2_test": 0.9847,
+            "mae": 0.24,
+            "rmse": 1.63,
+            "cv_mean": 0.984,
+            "cv_std": 0.0171
+        },
+        "随机森林": {
+            "r2_train": 0.9884,
+            "r2_test": 0.9678,
+            "mae": 0.91,
+            "rmse": 2.38,
+            "cv_mean": 0.9619,
+            "cv_std": 0.0098
+        },
+        "梯度提升": {
+            "r2_train": 0.9997,
+            "r2_test": 0.979,
+            "mae": 0.58,
+            "rmse": 1.92,
+            "cv_mean": 0.9755,
+            "cv_std": 0.0091
+        },
+        "XGBoost": {
+            "r2_train": 0.9988,
+            "r2_test": 0.979,
+            "mae": 0.69,
+            "rmse": 1.92,
+            "cv_mean": 0.975,
+            "cv_std": 0.0062,
+            "best_params": {
+                "n_estimators": 300,
+                "max_depth": 8,
+                "learning_rate": 0.05,
+                "subsample": 0.8,
+                "colsample_bytree": 0.8,
+                "reg_alpha": 0.1,
+                "reg_lambda": 5,
+                "min_child_weight": 3,
+                "objective": "reg:squarederror",
+                "random_state": 42,
+                "n_jobs": 1
+            },
+            "mape": 260204877.82
+        }
+    },
+    "future_prediction": {
+        "prediction_time_points": [
+            "2023-04",
+            "2023-05",
+            "2023-06",
+            "2023-07",
+            "2023-08",
+            "2023-09"
+        ],
+        "predicted_response_time": [
+            1.61,
+            1.61,
+            1.61,
+            1.61,
+            1.6,
+            1.59
+        ],
+        "prediction_explanation": "预测未来6个月的Change Request响应时间（基于最优XGBoost模型）"
+    },
+    "historical_data_sample": [
+        {
+            "time_str": "2022-08",
+            "response_time": 0.0,
+            "year": 2022,
+            "month": 8
+        },
+        {
+            "time_str": "2022-09",
+            "response_time": 1.83,
+            "year": 2022,
+            "month": 9
+        },
+        {
+            "time_str": "2022-10",
+            "response_time": 5.63,
+            "year": 2022,
+            "month": 10
+        },
+        {
+            "time_str": "2022-11",
+            "response_time": 7.79,
+            "year": 2022,
+            "month": 11
+        },
+        {
+            "time_str": "2022-12",
+            "response_time": 4.93,
+            "year": 2022,
+            "month": 12
+        },
+        {
+            "time_str": "2023-01",
+            "response_time": 2.33,
+            "year": 2023,
+            "month": 1
+        },
+        {
+            "time_str": "2023-02",
+            "response_time": 5.88,
+            "year": 2023,
+            "month": 2
+        },
+        {
+            "time_str": "2023-03",
+            "response_time": 2.25,
+            "year": 2023,
+            "month": 3
+        },
+        {
+            "time_str": "2016-02",
+            "response_time": 40.0,
+            "year": 2016,
+            "month": 2
+        },
+        {
+            "time_str": "2016-08",
+            "response_time": 0.0,
+            "year": 2016,
+            "month": 8
+        }
+    ],
+    "visualization_files": {
+        "time_series_plot": "change_request_time_series.png",
+        "prediction_plot": "response_time_prediction.png"
+    }
+}

@@ -242,21 +242,27 @@ else:
         'n_jobs': 1  # 关键：单线程运行，避免内存溢出
     }
     
-    # 构建最优XGBoost模型
-    best_xgb = xgb.XGBRegressor(**best_params)
-    
-    # 训练模型（添加early_stopping避免过拟合）
+    # 构建两个模型：一个用于交叉验证，一个用于最终训练
+    # 交叉验证模型（不使用 early_stopping）
+    xgb_cv = xgb.XGBRegressor(**best_params)
+
+    # 交叉验证评估
+    cv_scores = cross_val_score(xgb_cv, X_scaled, y, cv=tscv, scoring='r2')
+    print(f"✓ XGBoost交叉验证R²：{cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
+
+    # 最终训练模型（使用 early_stopping）
+    best_xgb = xgb.XGBRegressor(
+        **best_params,
+        early_stopping_rounds=50  # 早停，防止过拟合
+    )
+
+    # 训练模型
     eval_set = [(X_train, y_train), (X_test, y_test)]
     best_xgb.fit(
         X_train, y_train,
         eval_set=eval_set,
-        early_stopping_rounds=50,  # 早停，防止过拟合
         verbose=False
     )
-    
-    # 交叉验证评估
-    cv_scores = cross_val_score(best_xgb, X_scaled, y, cv=tscv, scoring='r2')
-    print(f"✓ XGBoost交叉验证R²：{cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
     
     # ==================== 6. 模型评估与未来预测 ====================
     print("【6/7】模型评估与未来预测...")
