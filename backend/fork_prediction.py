@@ -22,9 +22,31 @@ plt.rcParams['figure.dpi'] = 100
 
 
 # ==================== 封装的预测函数 ====================
+def predict_fork_count(csv_path: str = r"C:\Users\22390\Desktop\OpenSODA\backendData\top_300_metrics.csv") -> dict:
+    """
+    预测 Fork 数量（默认使用 technical_fork 列，即第32列）
+
+    参数:
+        csv_path: CSV文件路径（可选，有默认值）
+
+    返回:
+        包含预测结果和特征重要性的字典
+        {
+            "metadata": {...},           # 元数据信息
+            "predictions": {...},        # 预测结果
+            "feature_importance": {...}, # 特征重要性
+            "model_metrics": {...}       # 模型评估指标
+        }
+    """
+    # 固定使用第32列：technical_fork
+    target_column = "technical_fork"
+
+    return predict_target_column(csv_path, target_column)
+
+
 def predict_target_column(csv_path: str, target_column: str) -> dict:
     """
-    对指定的目标列进行预测
+    对指定的目标列进行预测（内部函数）
 
     参数:
         csv_path: CSV文件路径

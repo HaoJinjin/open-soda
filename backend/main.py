@@ -8,7 +8,11 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
-from backend.fork_prediction import predict_target_column
+
+# 导入封装的预测函数
+from backend.fork_prediction import predict_fork_count
+from backend.indicators_stat import get_indicator_statistics
+from backend.predict_response_time_xgboost import predict_response_time
 
 app = FastAPI()
 
@@ -22,6 +26,15 @@ app.add_middleware(
 )
 
 tasks: Dict[str, Dict[str, Any]] = {}
+
+# 响应时间预测任务状态（全局变量）
+response_time_task_status = {
+    "status": "idle",  # idle, running, completed, error
+    "progress": 0,
+    "message": "",
+    "result": None,
+    "error": None
+}
 
 
 class ConvertRequest(BaseModel):
@@ -112,41 +125,185 @@ async def health_check():
     return {"status": "ok"}
 
 
-@app.post("/predict")
-async def predict(request: PredictionRequest):
-    """
-    预测接口
+# ==================== 新增的3个预测接口 ====================
 
-    请求参数:
-        - target_column: 目标列名称（必填）
-        - csv_path: CSV文件路径（可选，默认使用配置的路径）
+@app.post("/api/predict/fork")
+async def api_predict_fork():
+    """
+    预测 Fork 数量（使用 technical_fork 列）
 
     返回:
         {
             "success": true,
             "data": {
-                "predictions": {...},        // 预测结果
-                "feature_importance": {...}  // 特征重要性
+                "metadata": {...},
+                "predictions": {...},
+                "feature_importance": {...}
             }
         }
     """
     try:
-        # 调用预测函数
-        result = predict_target_column(
-            csv_path=request.csv_path,
-            target_column=request.target_column
-        )
-
+        result = predict_fork_count()
         return {
             "success": True,
             "data": result
         }
-
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"预测失败: {str(e)}"
+            detail=f"Fork预测失败: {str(e)}"
         )
+
+
+@app.get("/api/statistics/indicators")
+async def api_get_indicators_stats():
+    """
+    获取指标统计信息
+
+    返回:
+        {
+            "success": true,
+            "data": {
+                "metadata": {...},
+                "indicator_statistics": [...],
+                "correlation_matrix": {...},
+                "top10_projects": [...]
+            }
+        }
+    """
+    try:
+        result = get_indicator_statistics()
+        return {
+            "success": True,
+            "data": result
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取指标统计失败: {str(e)}"
+        )
+
+
+# ==================== 响应时间预测接口（支持后台任务和轮询） ====================
+
+def run_response_time_prediction():
+    """后台任务：运行响应时间预测"""
+    global response_time_task_status
+
+    def progress_callback(progress, message):
+        """进度回调函数"""
+        response_time_task_status["progress"] = progress
+        response_time_task_status["message"] = message
+
+    try:
+        response_time_task_status["status"] = "running"
+        response_time_task_status["progress"] = 0
+        response_time_task_status["message"] = "开始预测..."
+        response_time_task_status["error"] = None
+
+        # 调用预测函数
+        result = predict_response_time(progress_callback=progress_callback)
+
+        response_time_task_status["status"] = "completed"
+        response_time_task_status["progress"] = 100
+        response_time_task_status["message"] = "预测完成！"
+        response_time_task_status["result"] = result
+
+    except Exception as e:
+        response_time_task_status["status"] = "error"
+        response_time_task_status["error"] = str(e)
+        response_time_task_status["message"] = f"预测失败: {str(e)}"
+
+
+@app.post("/api/predict/response-time/start")
+async def api_start_response_time_prediction(background_tasks: BackgroundTasks):
+    """
+    启动响应时间预测（后台任务）
+
+    返回:
+        {
+            "success": true,
+            "message": "任务已启动"
+        }
+    """
+    global response_time_task_status
+
+    if response_time_task_status["status"] == "running":
+        return {
+            "success": False,
+            "message": "任务正在运行中，请稍后再试"
+        }
+
+    # 重置任务状态
+    response_time_task_status = {
+        "status": "idle",
+        "progress": 0,
+        "message": "",
+        "result": None,
+        "error": None
+    }
+
+    # 添加后台任务
+    background_tasks.add_task(run_response_time_prediction)
+
+    return {
+        "success": True,
+        "message": "任务已启动"
+    }
+
+
+@app.get("/api/predict/response-time/status")
+async def api_get_response_time_status():
+    """
+    查询响应时间预测任务进度
+
+    返回:
+        {
+            "success": true,
+            "data": {
+                "status": "idle|running|completed|error",
+                "progress": 0-100,
+                "message": "当前步骤描述"
+            }
+        }
+    """
+    return {
+        "success": True,
+        "data": {
+            "status": response_time_task_status["status"],
+            "progress": response_time_task_status["progress"],
+            "message": response_time_task_status["message"],
+            "error": response_time_task_status["error"]
+        }
+    }
+
+
+@app.get("/api/predict/response-time/result")
+async def api_get_response_time_result():
+    """
+    获取响应时间预测结果
+
+    返回:
+        {
+            "success": true,
+            "data": {
+                "metadata": {...},
+                "model_evaluation": {...},
+                "future_prediction": {...},
+                "historical_data_sample": [...]
+            }
+        }
+    """
+    if response_time_task_status["status"] != "completed":
+        return {
+            "success": False,
+            "message": f"任务未完成，当前状态: {response_time_task_status['status']}"
+        }
+
+    return {
+        "success": True,
+        "data": response_time_task_status["result"]
+    }
 
 
 if __name__ == "__main__":
