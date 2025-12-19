@@ -4,15 +4,15 @@ import uuid
 import asyncio
 from pathlib import Path
 from typing import Dict, Any
-from fastapi import FastAPI, HTTPException, UploadFile, File, BackgroundTasks
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
 # 导入封装的预测函数
-from fork_prediction import predict_fork_count
-from indicators_stat import get_indicator_statistics
-from predict_response_time_xgboost import predict_response_time
+from backend.fork_prediction import predict_fork_count
+from backend.indicators_stat import get_indicator_statistics
+from backend.predict_response_time_xgboost import predict_response_time
 
 app = FastAPI()
 

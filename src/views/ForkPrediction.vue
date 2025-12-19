@@ -1,5 +1,5 @@
 <template>
-  <div class="fork-prediction" :style="{ height: pageHeight + 'px' }">
+  <div class="fork-prediction">
     <header class="page-header">
       <h1 class="page-title">🔱 Fork 数量预测</h1>
       <p class="page-subtitle">Fork Prediction - 基于随机森林模型的 Fork 数量预测</p>
@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
 
@@ -291,30 +291,17 @@ const getErrorClass = (error: number) => {
   if (error < 10) return 'error-medium'
   return 'error-high'
 }
-const pageHeight = ref(window.innerHeight)
-// 更新页面高度
-const updatePageHeight = () => {
-  pageHeight.value = window.innerHeight
-}
 
 onMounted(() => {
   loadPrediction()
-   window.addEventListener('resize', updatePageHeight)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updatePageHeight)
 })
 </script>
 
 <style scoped>
 .fork-prediction {
-  width: 100%;
-      overflow-y: auto;
-  box-sizing: border-box;
   padding: 20px;
   background: #000;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   color: #fff;
 }
 
