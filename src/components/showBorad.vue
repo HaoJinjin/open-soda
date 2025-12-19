@@ -6,26 +6,26 @@
         <div class="header-left">
           <span class="header-icon">🌐</span>
           <div class="header-text">
-            <h1 class="main-title">全局总览</h1>
-            <p class="subtitle">OpenSODA - Top 300 开源项目数据雷达</p>
+            <h1 class="main-title">{{ t(page.overview.title) }}</h1>
+            <p class="subtitle">{{ t(page.overview.subtitle) }}</p>
           </div>
         </div>
         <div class="header-stats">
           <div class="mini-stat">
             <span class="mini-value">{{ projects.length }}</span>
-            <span class="mini-label">项目</span>
+            <span class="mini-label">{{ t(page.overview.stats.projects) }}</span>
           </div>
           <div class="mini-stat">
             <span class="mini-value">{{ avgStar.toFixed(0) }}</span>
-            <span class="mini-label">平均⭐</span>
+            <span class="mini-label">{{ t(page.overview.stats.avgStars) }}</span>
           </div>
           <div class="mini-stat">
             <span class="mini-value">{{ avgActivity.toFixed(1) }}</span>
-            <span class="mini-label">活跃度</span>
+            <span class="mini-label">{{ t(page.overview.stats.activity) }}</span>
           </div>
           <div class="mini-stat">
             <span class="mini-value">{{ (totalParticipants / 1000).toFixed(1) }}K</span>
-            <span class="mini-label">贡献者</span>
+            <span class="mini-label">{{ t(page.overview.stats.contributors) }}</span>
           </div>
         </div>
       </div>
@@ -38,11 +38,11 @@
       <!-- 第一行：两个图表 -->
       <div class="chart-row">
         <div class="chart-container">
-          <h3 class="chart-title">📈 年度活跃度趋势</h3>
+          <h3 class="chart-title">{{ t(page.overview.charts.activityTrend) }}</h3>
           <div ref="activityRef" class="chart"></div>
         </div>
         <div class="chart-container">
-          <h3 class="chart-title">🏆 Star Top 10</h3>
+          <h3 class="chart-title">{{ t(page.overview.charts.starTop10) }}</h3>
           <div ref="starRef" class="chart"></div>
         </div>
       </div>
@@ -50,11 +50,11 @@
       <!-- 第二行：两个图表 -->
       <div class="chart-row">
         <div class="chart-container">
-          <h3 class="chart-title">📧 贡献者邮箱生态</h3>
+          <h3 class="chart-title">{{ t(page.overview.charts.emailEcosystem) }}</h3>
           <div ref="emailRef" class="chart"></div>
         </div>
         <div class="chart-container">
-          <h3 class="chart-title">🔱 Fork Top 10</h3>
+          <h3 class="chart-title">{{ t(page.overview.charts.forkTop10) }}</h3>
           <div ref="forkRef" class="chart"></div>
         </div>
       </div>
@@ -62,7 +62,7 @@
       <!-- 第三行：Issue趋势 -->
       <div class="chart-row single">
         <div class="chart-container">
-          <h3 class="chart-title">⏱️ Issue 响应趋势</h3>
+          <h3 class="chart-title">{{ t(page.overview.charts.issueResponseTrend) }}</h3>
           <div ref="issueRef" class="chart"></div>
         </div>
       </div>
@@ -72,12 +72,12 @@
     <div class="ranking-panel">
       <div class="ranking-header">
         <span class="ranking-icon">🏆</span>
-        <span class="ranking-title">实时排行榜</span>
+        <span class="ranking-title">{{ t(page.overview.ranking.title) }}</span>
       </div>
 
       <!-- Star 排行榜 -->
       <div class="ranking-section">
-        <div class="ranking-section-title">⭐ Star 排行</div>
+        <div class="ranking-section-title">{{ t(page.overview.ranking.starRanking) }}</div>
         <div class="ranking-list">
           <div
             v-for="(project, index) in topStarProjects"
@@ -96,7 +96,7 @@
 
       <!-- 活跃度排行榜 -->
       <div class="ranking-section">
-        <div class="ranking-section-title">🔥 活跃度排行</div>
+        <div class="ranking-section-title">{{ t(page.overview.ranking.activityRanking) }}</div>
         <div class="ranking-list">
           <div
             v-for="(project, index) in topActivityProjects"
@@ -115,7 +115,7 @@
 
       <!-- Fork 排行榜 -->
       <div class="ranking-section">
-        <div class="ranking-section-title">🔱 Fork 排行</div>
+        <div class="ranking-section-title">{{ t(page.overview.ranking.forkRanking) }}</div>
         <div class="ranking-list">
           <div
             v-for="(project, index) in topForkProjects"
@@ -140,6 +140,9 @@ import { ref, onMounted ,onUnmounted} from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseMaybeJSON, parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,
@@ -459,7 +462,6 @@ const pageHeight = ref(window.innerHeight)
 // 更新页面高度
 const updatePageHeight = () => {
   pageHeight.value = window.innerHeight
-  console.log('页面高度更新为：', pageHeight.value)
 }
 
 // 监听窗口大小变化

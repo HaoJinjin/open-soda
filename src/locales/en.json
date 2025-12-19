@@ -16,5 +16,30 @@
   },
   "layout": {
     "openDigger": "OpenDigger"
+  },
+  "pages": {
+    "overview": {
+      "title": "Overview",
+      "subtitle": "OpenSODA - Top 300 Open Source Project Data Radar",
+      "stats": {
+        "projects": "Projects",
+        "avgStars": "Avg Stars",
+        "activity": "Activity",
+        "contributors": "Contributors"
+      },
+      "charts": {
+        "activityTrend": "📈 Annual Activity Trend",
+        "starTop10": "🏆 Star Top 10",
+        "emailEcosystem": "📧 Contributor Email Ecosystem",
+        "forkTop10": "🔱 Fork Top 10",
+        "issueResponseTrend": "⏱️ Issue Response Trend"
+      },
+      "ranking": {
+        "title": "Realtime Rankings",
+        "starRanking": "⭐ Star Rankings",
+        "activityRanking": "🔥 Activity Rankings",
+        "forkRanking": "🔱 Fork Rankings"
+      }
+    }
   }
 }

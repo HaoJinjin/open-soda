@@ -16,5 +16,30 @@
   },
   "layout": {
     "openDigger": "OpenDigger"
+  },
+  "pages": {
+    "overview": {
+      "title": "全局总览",
+      "subtitle": "OpenSODA - Top 300 开源项目数据雷达",
+      "stats": {
+        "projects": "项目",
+        "avgStars": "平均⭐",
+        "activity": "活跃度",
+        "contributors": "贡献者"
+      },
+      "charts": {
+        "activityTrend": "📈 年度活跃度趋势",
+        "starTop10": "🏆 Star Top 10",
+        "emailEcosystem": "📧 贡献者邮箱生态",
+        "forkTop10": "🔱 Fork Top 10",
+        "issueResponseTrend": "⏱️ Issue 响应趋势"
+      },
+      "ranking": {
+        "title": "实时排行榜",
+        "starRanking": "⭐ Star 排行",
+        "activityRanking": "🔥 活跃度排行",
+        "forkRanking": "🔱 Fork 排行"
+      }
+    }
   }
 }

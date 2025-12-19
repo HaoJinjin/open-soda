@@ -1,5 +1,5 @@
 <template>
-  <div class="response-time-prediction">
+  <div class="response-time-prediction" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
       <h1 class="page-title">⏱️ 响应时间预测</h1>
       <p class="page-subtitle">Response Time Prediction - 基于 XGBoost 的响应时间预测与趋势分析</p>
@@ -502,19 +502,28 @@ const getTrendText = (index: number) => {
   if (current < previous) return `下降 ${Math.abs(parseFloat(change))}%`
   return '持平'
 }
+const pageHeight = ref(window.innerHeight)
+// 更新页面高度
+const updatePageHeight = () => {
+  pageHeight.value = window.innerHeight
+}
 
+// 监听窗口大小变化
 onMounted(() => {
-  // 页面加载时可以尝试自动加载本地默认数据作为初始展示
-  // 用户可以点击按钮重新预测或刷新数据
+  window.addEventListener('resize', updatePageHeight)
 })
 
 onUnmounted(() => {
   stopPolling()
+    window.removeEventListener('resize', updatePageHeight)
 })
 </script>
 
 <style scoped>
 .response-time-prediction {
+  box-sizing: border-box;
+    overflow-y: auto;
+  width: 100%;
   padding: 20px;
   background: #000;
   min-height: 100vh;
