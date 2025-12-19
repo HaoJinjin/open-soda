@@ -1,8 +1,8 @@
 <template>
   <div class="impact-analysis">
     <header class="page-header">
-      <h1 class="page-title">影响力分析</h1>
-      <p class="page-subtitle">Impact Analysis - 项目在社区中的影响力评估</p>
+      <h1 class="page-title">{{ t(page.impact.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.impact.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">⭐</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalStars.toLocaleString() }}</div>
-          <div class="metric-label">总星标数</div>
+          <div class="metric-label">{{ t(page.impact.stats.totalStars) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">👁️</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalAttention.toLocaleString() }}</div>
-          <div class="metric-label">总关注度</div>
+          <div class="metric-label">{{ t(page.impact.stats.totalAttention) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🏆</div>
         <div class="metric-content">
           <div class="metric-value">{{ avgOpenRank.toFixed(2) }}</div>
-          <div class="metric-label">平均OpenRank</div>
+          <div class="metric-label">{{ t(page.impact.stats.avgOpenRank) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🔱</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalForks.toLocaleString() }}</div>
-          <div class="metric-label">总Fork数</div>
+          <div class="metric-label">{{ t(page.impact.stats.totalForks) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🌟 Star排行榜 Top 20</h3>
+        <h3 class="chart-title">🌟 {{ t(page.impact.charts.starRanking) }}</h3>
         <div ref="starRankRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">🏆 OpenRank Top 15</h3>
+        <h3 class="chart-title">🏆 {{ t(page.impact.charts.openRankTop) }}</h3>
         <div ref="openRankRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">💬 评论活跃度分布</h3>
+        <h3 class="chart-title">💬 {{ t(page.impact.charts.commentActivityDistribution) }}</h3>
         <div ref="commentsRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

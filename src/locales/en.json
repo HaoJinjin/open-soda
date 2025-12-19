@@ -10,9 +10,9 @@
     "issue": "Issue Lifecycle",
     "code": "PR & Code Changes",
     "community": "Community Attention",
-    "forkPrediction": "🔱 Fork Prediction",
-    "indicatorStatistics": "📊 Indicator Statistics",
-    "responseTimePrediction": "⏱️ Response Time Prediction"
+    "forkPrediction": "Fork Prediction",
+    "indicatorStatistics": "Indicator Statistics",
+    "responseTimePrediction": "Response Time Prediction"
   },
   "layout": {
     "openDigger": "OpenDigger"
@@ -39,6 +39,96 @@
         "starRanking": "⭐ Star Rankings",
         "activityRanking": "🔥 Activity Rankings",
         "forkRanking": "🔱 Fork Rankings"
+      }
+    },
+    "activity": {
+      "title": "Activity Analysis",
+      "subtitle": "Activity Analysis - Project Activity and Development Trends",
+      "stats": {
+        "avgActivity": "Average Activity",
+        "newContributors": "New Contributors Total",
+        "inactiveContributors": "Inactive Contributors",
+        "activeProjects": "Active Projects"
+      },
+      "charts": {
+        "activityTrend": "📈 Activity Trend Distribution",
+        "topActiveProjects": "👑 Top 10 Active Projects",
+        "newContributorsDistribution": "🌟 New Contributors Distribution"
+      }
+    },
+    "impact": {
+      "title": "Impact Analysis",
+      "subtitle": "Impact Analysis - Project Influence Assessment",
+      "stats": {
+        "totalStars": "Total Stars",
+        "totalAttention": "Total Attention",
+        "avgOpenRank": "Avg OpenRank",
+        "totalForks": "Total Forks"
+      },
+      "charts": {
+        "starRanking": "🌟 Star Rankings Top 20",
+        "openRankTop": "🏆 OpenRank Top 15",
+        "commentActivityDistribution": "💬 Comment Activity Distribution"
+      }
+    },
+    "contributor": {
+      "title": "Contributor Ecosystem",
+      "subtitle": "Contributor Ecosystem - Community Health and Risk Analysis",
+      "stats": {
+        "avgBusFactor": "Average Bus Factor",
+        "totalParticipants": "Total Participants",
+        "totalNewContributors": "New Contributors Total",
+        "inactiveContributors": "Inactive Contributors"
+      },
+      "charts": {
+        "busFactorDistribution": "🚌 Bus Factor Distribution",
+        "emailEcosystem": "📧 Contributor Email Ecosystem",
+        "participantsSizeDistribution": "👤 Participants Size Distribution"
+      }
+    },
+    "issue": {
+      "title": "Issue Lifecycle",
+      "subtitle": "Issue Lifecycle - Maintenance Quality and Response Speed Assessment",
+      "stats": {
+        "totalNewIssues": "Total New Issues",
+        "totalClosedIssues": "Closed Issues",
+        "activeIssuesPR": "Active Issues/PR",
+        "totalComments": "Total Issue Comments"
+      },
+      "charts": {
+        "issueComparison": "📊 Issues Created vs Closed",
+        "responseTimeTrend": "⏱️ Issue Response Time Trend",
+        "resolutionTimeTrend": "🔧 Issue Resolution Duration Trend"
+      }
+    },
+    "code": {
+      "title": "PR & Code Changes",
+      "subtitle": "Pull Request & Code Changes - Development Activity Intensity",
+      "stats": {
+        "totalPRs": "Total PRs",
+        "acceptedPRs": "Accepted PRs",
+        "linesAdded": "Lines Added",
+        "linesRemoved": "Lines Removed"
+      },
+      "charts": {
+        "codeChangeTop": "📊 Code Changes Top 20",
+        "prAcceptanceRate": "🔀 PR Acceptance Rate Distribution",
+        "prReviewActivity": "📝 PR Review Activity"
+      }
+    },
+    "community": {
+      "title": "Community Attention",
+      "subtitle": "Community Attention - Project Popularity and Community Participation",
+      "stats": {
+        "totalAttention": "Total Attention",
+        "totalStars": "Total Stars",
+        "totalForks": "Total Forks",
+        "totalParticipants": "Total Participants"
+      },
+      "charts": {
+        "attentionRanking": "🔥 Attention Rankings Top 20",
+        "starForkRelationship": "⭐ Stars vs Forks Relationship",
+        "communityInteractionHeat": "💬 Community Interaction Heat"
       }
     }
   }

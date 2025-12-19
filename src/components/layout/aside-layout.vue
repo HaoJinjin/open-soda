@@ -41,6 +41,9 @@ interface Menu {
 const current = ref("overview")
 
 const menus: Menu[] = [
+    { key: "forkPrediction" },
+  { key: "indicatorStatistics" },
+  { key: "responseTimePrediction" },
   { key: "overview" },
   { key: "activity" },
   { key: "impact" },
@@ -48,9 +51,6 @@ const menus: Menu[] = [
   { key: "issue" },
   { key: "code" },
   { key: "community" },
-  { key: "forkPrediction" },
-  { key: "indicatorStatistics" },
-  { key: "responseTimePrediction" }
 ]
 
 function selectMenu(m: Menu) {

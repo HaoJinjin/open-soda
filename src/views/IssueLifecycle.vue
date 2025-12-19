@@ -1,8 +1,8 @@
 <template>
   <div class="issue-lifecycle">
     <header class="page-header">
-      <h1 class="page-title">Issue 生命周期</h1>
-      <p class="page-subtitle">Issue Lifecycle - 维护质量和响应速度评估</p>
+      <h1 class="page-title">{{ t(page.issue.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.issue.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">📝</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalNewIssues.toLocaleString() }}</div>
-          <div class="metric-label">新增Issue总数</div>
+          <div class="metric-label">{{ t(page.issue.stats.totalNewIssues) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">✅</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalClosedIssues.toLocaleString() }}</div>
-          <div class="metric-label">已关闭Issue</div>
+          <div class="metric-label">{{ t(page.issue.stats.totalClosedIssues) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🔄</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalActiveIssues.toLocaleString() }}</div>
-          <div class="metric-label">活跃Issue/PR</div>
+          <div class="metric-label">{{ t(page.issue.stats.activeIssuesPR) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">💬</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalComments.toLocaleString() }}</div>
-          <div class="metric-label">Issue评论总数</div>
+          <div class="metric-label">{{ t(page.issue.stats.totalComments) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📊 Issue新增vs关闭对比</h3>
+        <h3 class="chart-title">📊 {{ t(page.issue.charts.issueComparison) }}</h3>
         <div ref="issueCompareRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">⏱️ Issue响应时间趋势</h3>
+        <h3 class="chart-title">⏱️ {{ t(page.issue.charts.responseTimeTrend) }}</h3>
         <div ref="responseTimeRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">🔧 Issue解决时长趋势</h3>
+        <h3 class="chart-title">🔧 {{ t(page.issue.charts.resolutionTimeTrend) }}</h3>
         <div ref="resolutionTimeRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseMaybeJSON, parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

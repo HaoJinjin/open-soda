@@ -10,9 +10,9 @@
     "issue": "Issue 生命周期",
     "code": "PR & 代码变更",
     "community": "社区关注度",
-    "forkPrediction": "🔱 Fork 预测",
-    "indicatorStatistics": "📊 指标统计",
-    "responseTimePrediction": "⏱️ 响应时间预测"
+    "forkPrediction": "Fork 预测",
+    "indicatorStatistics": "指标统计",
+    "responseTimePrediction": "响应时间预测"
   },
   "layout": {
     "openDigger": "OpenDigger"
@@ -39,6 +39,96 @@
         "starRanking": "⭐ Star 排行",
         "activityRanking": "🔥 活跃度排行",
         "forkRanking": "🔱 Fork 排行"
+      }
+    },
+    "activity": {
+      "title": "活跃度分析",
+      "subtitle": "Activity Analysis - 项目活跃程度和发展趋势",
+      "stats": {
+        "avgActivity": "平均活跃度",
+        "newContributors": "新贡献者总数",
+        "inactiveContributors": "不活跃贡献者",
+        "activeProjects": "高活跃项目数"
+      },
+      "charts": {
+        "activityTrend": "📈 活跃度趋势分布",
+        "topActiveProjects": "👑 Top 10 活跃项目",
+        "newContributorsDistribution": "🌟 新贡献者分布"
+      }
+    },
+    "impact": {
+      "title": "影响力分析",
+      "subtitle": "Impact Analysis - 项目在社区中的影响力评估",
+      "stats": {
+        "totalStars": "总星标数",
+        "totalAttention": "总关注度",
+        "avgOpenRank": "平均OpenRank",
+        "totalForks": "总Fork数"
+      },
+      "charts": {
+        "starRanking": "🌟 Star排行榜 Top 20",
+        "openRankTop": "🏆 OpenRank Top 15",
+        "commentActivityDistribution": "💬 评论活跃度分布"
+      }
+    },
+    "contributor": {
+      "title": "贡献者生态",
+      "subtitle": "Contributor Ecosystem - 社区健康度和风险分析",
+      "stats": {
+        "avgBusFactor": "平均巴士因子",
+        "totalParticipants": "总参与者数",
+        "totalNewContributors": "新贡献者总数",
+        "inactiveContributors": "不活跃贡献者"
+      },
+      "charts": {
+        "busFactorDistribution": "🚌 巴士因子分布",
+        "emailEcosystem": "📧 贡献者邮箱生态",
+        "participantsSizeDistribution": "👤 参与者规模分布"
+      }
+    },
+    "issue": {
+      "title": "Issue 生命周期",
+      "subtitle": "Issue Lifecycle - 维护质量和响应速度评估",
+      "stats": {
+        "totalNewIssues": "新增Issue总数",
+        "totalClosedIssues": "已关闭Issue",
+        "activeIssuesPR": "活跃Issue/PR",
+        "totalComments": "Issue评论总数"
+      },
+      "charts": {
+        "issueComparison": "📊 Issue新增vs关闭对比",
+        "responseTimeTrend": "⏱️ Issue响应时间趋势",
+        "resolutionTimeTrend": "🔧 Issue解决时长趋势"
+      }
+    },
+    "code": {
+      "title": "PR & 代码变更",
+      "subtitle": "Pull Request & Code Changes - 开发活动强度展示",
+      "stats": {
+        "totalPRs": "PR总数",
+        "acceptedPRs": "已接受PR",
+        "linesAdded": "新增代码行",
+        "linesRemoved": "删除代码行"
+      },
+      "charts": {
+        "codeChangeTop": "📊 代码变更量 Top 20",
+        "prAcceptanceRate": "🔀 PR接受率分布",
+        "prReviewActivity": "📝 PR评审活跃度"
+      }
+    },
+    "community": {
+      "title": "社区关注度",
+      "subtitle": "Community Attention - 项目受欢迎程度和社区参与度",
+      "stats": {
+        "totalAttention": "总关注度",
+        "totalStars": "总星标数",
+        "totalForks": "总Fork数",
+        "totalParticipants": "总参与者"
+      },
+      "charts": {
+        "attentionRanking": "🔥 关注度排行 Top 20",
+        "starForkRelationship": "⭐ Star vs Fork 关系",
+        "communityInteractionHeat": "💬 社区互动热度"
       }
     }
   }
