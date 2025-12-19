@@ -93,14 +93,14 @@
               <tbody>
                 <tr v-for="stat in indicatorStats" :key="stat.indicator_column">
                   <td class="indicator-name">{{ stat.indicator_name }}</td>
-                  <td>{{ stat.mean.toFixed(2) }}</td>
-                  <td>{{ stat.median.toFixed(2) }}</td>
-                  <td>{{ stat.std.toFixed(2) }}</td>
-                  <td>{{ stat.min.toFixed(2) }}</td>
-                  <td>{{ stat.max.toFixed(2) }}</td>
-                  <td>{{ stat.quantile_25.toFixed(2) }}</td>
-                  <td>{{ stat.quantile_75.toFixed(2) }}</td>
-                  <td>{{ stat.quantile_95.toFixed(2) }}</td>
+                  <td>{{ formatNumber(stat.mean) }}</td>
+                  <td>{{ formatNumber(stat.median) }}</td>
+                  <td>{{ formatNumber(stat.std) }}</td>
+                  <td>{{ formatNumber(stat.min) }}</td>
+                  <td>{{ formatNumber(stat.max) }}</td>
+                  <td>{{ formatNumber(stat.quantile_25) }}</td>
+                  <td>{{ formatNumber(stat.quantile_75) }}</td>
+                  <td>{{ formatNumber(stat.quantile_95) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -133,26 +133,36 @@ const top10ComparisonRef = ref<HTMLElement>()
 const loadStatistics = async () => {
   loading.value = true
   error.value = ''
-  
+
   try {
     const response = await axios.get('http://localhost:8000/api/statistics/indicators')
-    
+
     if (response.data.success) {
       const data = response.data.data
-      
+
       metadata.value = data.metadata
       indicatorStats.value = data.indicator_statistics
       correlationMatrix.value = data.correlation_matrix
       top10Projects.value = data.top10_projects
-      
+
+      // 先关闭 loading，让 DOM 渲染
+      loading.value = false
+
+      // 等待 DOM 更新完成后再渲染图表
       await nextTick()
       renderCharts()
     } else {
-      error.value = '加载失败'
+      error.value = '加载失败：服务器返回 success=false'
+      loading.value = false
     }
   } catch (err: any) {
-    error.value = err.message || '网络错误'
-  } finally {
+    if (err.response) {
+      error.value = `服务器错误 (${err.response.status}): ${err.response.data?.message || err.message}`
+    } else if (err.request) {
+      error.value = '无法连接到后端服务，请确保后端已启动 (http://localhost:8000)'
+    } else {
+      error.value = err.message || '未知错误'
+    }
     loading.value = false
   }
 }
@@ -168,8 +178,13 @@ const renderCharts = () => {
 const renderHeatmap = () => {
   if (!heatmapRef.value) return
 
+  if (!correlationMatrix.value || Object.keys(correlationMatrix.value).length === 0) {
+    return
+  }
+
   const chart = echarts.init(heatmapRef.value)
   const indicators = Object.keys(correlationMatrix.value)
+
   const indicatorNames: any = {
     'inactive_contributors': '非活跃贡献者',
     'issues_and_change_request_active': '活跃工单/PR',
@@ -182,9 +197,14 @@ const renderHeatmap = () => {
   const heatmapData: any[] = []
   indicators.forEach((row, i) => {
     indicators.forEach((col, j) => {
-      heatmapData.push([i, j, correlationMatrix.value[row][col].toFixed(3)])
+      const value = correlationMatrix.value[row]?.[col]
+      if (value !== undefined && value !== null) {
+        heatmapData.push([i, j, value.toFixed(3)])
+      }
     })
   })
+
+  console.log('📊 热力图数据点数:', heatmapData.length)
 
   chart.setOption({
     backgroundColor: 'transparent',
@@ -363,13 +383,36 @@ const renderTop10Comparison = () => {
       name: indicatorNames[ind],
       type: 'bar',
       stack: 'total',
-      data: top10Projects.value.map(p => p.indicator_values[`${ind}_scaled`]?.toFixed(2) || 0),
+      data: top10Projects.value.map(p => {
+        const val = p.indicator_values[`${ind}_scaled`]
+        return val !== null && val !== undefined ? parseFloat(formatNumber(val)) : 0
+      }),
       itemStyle: {
         color: ['#00d4ff', '#0066ff', '#ff6b6b', '#ffaa00', '#00ff88', '#ff44ff'][idx % 6]
       }
     }))
   })
 }
+
+// 格式化数字（处理字符串和数值）
+const formatNumber = (value: any): string => {
+  if (value === null || value === undefined) return '0.00'
+
+  // 如果是字符串，尝试转换为数字
+  if (typeof value === 'string') {
+    const num = parseFloat(value)
+    if (isNaN(num)) return value // 如果无法转换，返回原字符串
+    return num.toFixed(2)
+  }
+
+  // 如果是数字，直接格式化
+  if (typeof value === 'number') {
+    return value.toFixed(2)
+  }
+
+  return String(value)
+}
+
 const pageHeight = ref(window.innerHeight)
 // 更新页面高度
 const updatePageHeight = () => {

@@ -91,11 +91,11 @@
                 <tr v-for="(item, index) in topPredictions" :key="index">
                   <td>{{ index + 1 }}</td>
                   <td class="project-name">{{ item.project_name }}</td>
-                  <td>{{ item.true_value.toFixed(2) }}</td>
-                  <td>{{ item.predicted_value.toFixed(2) }}</td>
-                  <td>{{ item.absolute_error.toFixed(2) }}</td>
+                  <td>{{ formatNumber(item.true_value) }}</td>
+                  <td>{{ formatNumber(item.predicted_value) }}</td>
+                  <td>{{ formatNumber(item.absolute_error) }}</td>
                   <td :class="getErrorClass(item.relative_error_percent)">
-                    {{ item.relative_error_percent.toFixed(2) }}%
+                    {{ formatNumber(item.relative_error_percent) }}%
                   </td>
                 </tr>
               </tbody>
@@ -130,29 +130,38 @@ const errorDistributionRef = ref<HTMLElement>()
 const loadPrediction = async () => {
   loading.value = true
   error.value = ''
-  
+
   try {
     const response = await axios.post('http://localhost:8000/api/predict/fork')
-    
+
     if (response.data.success) {
       const data = response.data.data
-      
+
       // 提取数据
       metadata.value = data.predictions.metadata
       metrics.value = data.predictions.metadata.metrics
       predictions.value = data.predictions.predictions
       featureImportance.value = data.feature_importance.feature_importance
       topPredictions.value = predictions.value.slice(0, 20)
-      
-      // 渲染图表
+
+      // 先关闭 loading，让 DOM 渲染
+      loading.value = false
+
+      // 等待 DOM 更新完成后再渲染图表
       await nextTick()
       renderCharts()
     } else {
-      error.value = '加载失败'
+      error.value = '加载失败：服务器返回 success=false'
+      loading.value = false
     }
   } catch (err: any) {
-    error.value = err.message || '网络错误'
-  } finally {
+    if (err.response) {
+      error.value = `服务器错误 (${err.response.status}): ${err.response.data?.message || err.message}`
+    } else if (err.request) {
+      error.value = '无法连接到后端服务，请确保后端已启动 (http://localhost:8000)'
+    } else {
+      error.value = err.message || '未知错误'
+    }
     loading.value = false
   }
 }
@@ -285,12 +294,32 @@ const renderErrorDistribution = () => {
   })
 }
 
+// 格式化数字（处理字符串和数值）
+const formatNumber = (value: any): string => {
+  if (value === null || value === undefined) return '0.00'
+
+  // 如果是字符串，尝试转换为数字
+  if (typeof value === 'string') {
+    const num = parseFloat(value)
+    if (isNaN(num)) return value // 如果无法转换，返回原字符串
+    return num.toFixed(2)
+  }
+
+  // 如果是数字，直接格式化
+  if (typeof value === 'number') {
+    return value.toFixed(2)
+  }
+
+  return String(value)
+}
+
 // 误差等级样式
 const getErrorClass = (error: number) => {
   if (error < 5) return 'error-low'
   if (error < 10) return 'error-medium'
   return 'error-high'
 }
+
 const pageHeight = ref(window.innerHeight)
 // 更新页面高度
 const updatePageHeight = () => {

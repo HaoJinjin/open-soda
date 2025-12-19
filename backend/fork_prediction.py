@@ -65,7 +65,15 @@ def predict_target_column(csv_path: str, target_column: str) -> dict:
 
         # 2. 处理目标列
         def convert_to_numeric(col_data):
-            """智能转换为数值型（兼容时间/数字）"""
+            """智能转换为数值型（优先尝试数值，再尝试时间）"""
+            # 先尝试直接转换为数值
+            numeric_result = pd.to_numeric(col_data, errors='coerce')
+
+            # 如果大部分数据都能转换为数值，就使用数值
+            if numeric_result.notna().sum() > len(col_data) * 0.5:
+                return numeric_result
+
+            # 否则尝试时间转换
             try:
                 time_formats = ['%Y-%m-%d', '%Y-%m-%d %H:%M:%S', '%Y/%m/%d', '%Y%m%d']
                 for fmt in time_formats:
@@ -75,7 +83,7 @@ def predict_target_column(csv_path: str, target_column: str) -> dict:
                         continue
                 return pd.to_datetime(col_data).astype('int64') // 10**9
             except:
-                return pd.to_numeric(col_data, errors='coerce')
+                return numeric_result
 
         df['target_numeric'] = convert_to_numeric(df[target_column])
         df_clean = df.dropna(subset=['target_numeric']).reset_index(drop=True)
@@ -141,9 +149,18 @@ def predict_target_column(csv_path: str, target_column: str) -> dict:
         def revert_numeric_to_original(numeric_val, original_data):
             """将数值型结果还原为原始格式"""
             try:
+                # 先尝试直接转换为数值
                 original_sample = original_data.dropna().iloc[0]
-                pd.to_datetime(original_sample)
-                return datetime.fromtimestamp(int(numeric_val)).strftime('%Y-%m-%d %H:%M:%S')
+
+                # 检查原始数据是否为数值型
+                try:
+                    float(original_sample)
+                    # 如果能转换为浮点数，说明是数值型，直接返回
+                    return round(float(numeric_val), 2)
+                except (ValueError, TypeError):
+                    # 如果不能转换为浮点数，尝试时间转换
+                    pd.to_datetime(original_sample)
+                    return datetime.fromtimestamp(int(numeric_val)).strftime('%Y-%m-%d %H:%M:%S')
             except:
                 return round(float(numeric_val), 2)
 
@@ -374,12 +391,19 @@ if __name__ == "__main__":
     # 还原目标值为原始格式
     def revert_numeric_to_original(numeric_val, original_data):
         """将数值型结果还原为原始格式"""
-        # 如果是时间戳，转回时间字符串
         try:
+            # 先尝试直接转换为数值
             original_sample = original_data.dropna().iloc[0]
-            # 检查原始数据是否为时间
-            pd.to_datetime(original_sample)
-            return datetime.fromtimestamp(int(numeric_val)).strftime('%Y-%m-%d %H:%M:%S')
+
+            # 检查原始数据是否为数值型
+            try:
+                float(original_sample)
+                # 如果能转换为浮点数，说明是数值型，直接返回
+                return round(float(numeric_val), 2)
+            except (ValueError, TypeError):
+                # 如果不能转换为浮点数，尝试时间转换
+                pd.to_datetime(original_sample)
+                return datetime.fromtimestamp(int(numeric_val)).strftime('%Y-%m-%d %H:%M:%S')
         except:
             # 普通数值
             return round(float(numeric_val), 2)
