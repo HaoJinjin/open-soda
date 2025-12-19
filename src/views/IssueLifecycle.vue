@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📊 {{ t(page.issue.charts.issueComparison) }}</h3>
+        <h3 class="chart-title"> {{ t(page.issue.charts.issueComparison) }}</h3>
         <div ref="issueCompareRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">⏱️ {{ t(page.issue.charts.responseTimeTrend) }}</h3>
+        <h3 class="chart-title"> {{ t(page.issue.charts.responseTimeTrend) }}</h3>
         <div ref="responseTimeRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">🔧 {{ t(page.issue.charts.resolutionTimeTrend) }}</h3>
+        <h3 class="chart-title"> {{ t(page.issue.charts.resolutionTimeTrend) }}</h3>
         <div ref="resolutionTimeRef" class="chart"></div>
       </div>
     </div>

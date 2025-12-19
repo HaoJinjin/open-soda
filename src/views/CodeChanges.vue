@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📊 {{ t(page.code.charts.codeChangeTop) }}</h3>
+        <h3 class="chart-title">{{ t(page.code.charts.codeChangeTop) }}</h3>
         <div ref="codeChangeRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">🔀 {{ t(page.code.charts.prAcceptanceRate) }}</h3>
+        <h3 class="chart-title">{{ t(page.code.charts.prAcceptanceRate) }}</h3>
         <div ref="prAcceptanceRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">📝 {{ t(page.code.charts.prReviewActivity) }}</h3>
+        <h3 class="chart-title"> {{ t(page.code.charts.prReviewActivity) }}</h3>
         <div ref="prReviewsRef" class="chart"></div>
       </div>
     </div>

@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🌟 {{ t(page.impact.charts.starRanking) }}</h3>
+        <h3 class="chart-title"> {{ t(page.impact.charts.starRanking) }}</h3>
         <div ref="starRankRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">🏆 {{ t(page.impact.charts.openRankTop) }}</h3>
+        <h3 class="chart-title"> {{ t(page.impact.charts.openRankTop) }}</h3>
         <div ref="openRankRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">💬 {{ t(page.impact.charts.commentActivityDistribution) }}</h3>
+        <h3 class="chart-title"> {{ t(page.impact.charts.commentActivityDistribution) }}</h3>
         <div ref="commentsRef" class="chart"></div>
       </div>
     </div>

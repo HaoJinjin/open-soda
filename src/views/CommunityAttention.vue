@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🔥 {{ t(page.community.charts.attentionRanking) }}</h3>
+        <h3 class="chart-title">{{ t(page.community.charts.attentionRanking) }}</h3>
         <div ref="attentionRankRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">⭐ {{ t(page.community.charts.starForkRelationship) }}</h3>
+        <h3 class="chart-title"> {{ t(page.community.charts.starForkRelationship) }}</h3>
         <div ref="starForkRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">💬 {{ t(page.community.charts.communityInteractionHeat) }}</h3>
+        <h3 class="chart-title"> {{ t(page.community.charts.communityInteractionHeat) }}</h3>
         <div ref="interactionRef" class="chart"></div>
       </div>
     </div>

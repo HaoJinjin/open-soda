@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📈 {{ t(page.activity.charts.activityTrend) }}</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.activityTrend) }}</h3>
         <div ref="activityTrendRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">👑 {{ t(page.activity.charts.topActiveProjects) }}</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.topActiveProjects) }}</h3>
         <div ref="topActiveRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">🌟 {{ t(page.activity.charts.newContributorsDistribution) }}</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.newContributorsDistribution) }}</h3>
         <div ref="newContributorsRef" class="chart"></div>
       </div>
     </div>

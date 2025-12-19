@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🚌 {{ t(page.contributor.charts.busFactorDistribution) }}</h3>
+        <h3 class="chart-title">{{ t(page.contributor.charts.busFactorDistribution) }}</h3>
         <div ref="busFactorRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">📧 {{ t(page.contributor.charts.emailEcosystem) }}</h3>
+        <h3 class="chart-title"> {{ t(page.contributor.charts.emailEcosystem) }}</h3>
         <div ref="emailRef" class="chart"></div>
       </div>
 
       <div class="chart-box">
-        <h3 class="chart-title">👤 {{ t(page.contributor.charts.participantsSizeDistribution) }}</h3>
+        <h3 class="chart-title"> {{ t(page.contributor.charts.participantsSizeDistribution) }}</h3>
         <div ref="participantsRef" class="chart"></div>
       </div>
     </div>
