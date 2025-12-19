@@ -1,0 +1,20 @@
+{
+  "common": {
+    "language": "Language"
+  },
+  "menu": {
+    "overview": "Overview",
+    "activity": "Activity Analysis",
+    "impact": "Impact Analysis",
+    "contributor": "Contributor Ecosystem",
+    "issue": "Issue Lifecycle",
+    "code": "PR & Code Changes",
+    "community": "Community Attention",
+    "forkPrediction": "🔱 Fork Prediction",
+    "indicatorStatistics": "📊 Indicator Statistics",
+    "responseTimePrediction": "⏱️ Response Time Prediction"
+  },
+  "layout": {
+    "openDigger": "OpenDigger"
+  }
+}

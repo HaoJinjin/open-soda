@@ -1,0 +1,20 @@
+{
+  "common": {
+    "language": "语言"
+  },
+  "menu": {
+    "overview": "全局总览",
+    "activity": "活跃度分析",
+    "impact": "影响力分析",
+    "contributor": "贡献者生态",
+    "issue": "Issue 生命周期",
+    "code": "PR & 代码变更",
+    "community": "社区关注度",
+    "forkPrediction": "🔱 Fork 预测",
+    "indicatorStatistics": "📊 指标统计",
+    "responseTimePrediction": "⏱️ 响应时间预测"
+  },
+  "layout": {
+    "openDigger": "OpenDigger"
+  }
+}

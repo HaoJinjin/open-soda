@@ -7,14 +7,18 @@
 
     <!-- 任务控制区 -->
     <div class="control-panel">
-      <button 
-        @click="startPrediction" 
+      <div class="mode-notice">
+        💡 提示：后端不可用时，将自动加载本地默认数据进行展示
+      </div>
+
+      <button
+        @click="startPrediction"
         :disabled="taskStatus === 'running'"
         class="start-btn"
       >
         {{ taskStatus === 'running' ? '预测中...' : '开始预测' }}
       </button>
-      
+
       <div v-if="taskStatus === 'running'" class="progress-container">
         <div class="progress-bar">
           <div class="progress-fill" :style="{ width: progress + '%' }"></div>
@@ -159,7 +163,9 @@ let pollTimer: any = null
 // 开始预测
 const startPrediction = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/predict/response-time/start')
+    const response = await axios.post('http://localhost:8000/api/predict/response-time/start', {}, {
+      timeout: 5000 // 5秒超时
+    })
 
     if (response.data.success) {
       taskStatus.value = 'running'
@@ -173,8 +179,9 @@ const startPrediction = async () => {
       taskStatus.value = 'error'
     }
   } catch (err: any) {
-    errorMessage.value = err.message || '网络错误'
-    taskStatus.value = 'error'
+    // 后端不可用，读取本地默认数据
+    console.warn('后端不可用，读取本地默认数据:', err.message)
+    await loadDefaultData()
   }
 }
 
@@ -213,10 +220,30 @@ const stopPolling = () => {
   }
 }
 
+// 加载本地默认数据
+const loadDefaultData = async () => {
+  try {
+    // 尝试从本地文件加载
+    const response = await axios.get('/backendData/response_time_prediction_result.json')
+    result.value = response.data
+    taskStatus.value = 'completed'
+
+    await nextTick()
+    renderCharts()
+  } catch (err: any) {
+    // 本地文件也不存在，显示错误
+    console.error('无法加载本地数据:', err)
+    errorMessage.value = '⚠️ 后端服务不可用，且本地数据文件不存在。请确保 backendData/response_time_prediction_result.json 文件存在。'
+    taskStatus.value = 'error'
+  }
+}
+
 // 加载预测结果
 const loadResult = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/predict/response-time/result')
+    const response = await axios.get('http://localhost:8000/api/predict/response-time/result', {
+      timeout: 5000
+    })
 
     if (response.data.success) {
       result.value = response.data.data
@@ -225,8 +252,9 @@ const loadResult = async () => {
       renderCharts()
     }
   } catch (err: any) {
-    errorMessage.value = err.message || '加载结果失败'
-    taskStatus.value = 'error'
+    // 后端不可用，尝试加载本地默认数据
+    console.warn('无法从后端加载结果，尝试读取本地默认数据:', err.message)
+    await loadDefaultData()
   }
 }
 
@@ -476,7 +504,8 @@ const getTrendText = (index: number) => {
 }
 
 onMounted(() => {
-  // 页面加载时不自动开始预测，等待用户点击
+  // 页面加载时可以尝试自动加载本地默认数据作为初始展示
+  // 用户可以点击按钮重新预测或刷新数据
 })
 
 onUnmounted(() => {
@@ -520,6 +549,17 @@ onUnmounted(() => {
   padding: 30px;
   margin-bottom: 30px;
   text-align: center;
+}
+
+.mode-notice {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #00d4ff;
+  text-align: left;
 }
 
 .start-btn {
