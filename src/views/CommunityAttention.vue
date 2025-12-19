@@ -1,8 +1,8 @@
 <template>
   <div class="community-attention">
     <header class="page-header">
-      <h1 class="page-title">社区关注度</h1>
-      <p class="page-subtitle">Community Attention - 项目受欢迎程度和社区参与度</p>
+      <h1 class="page-title">{{ t(page.community.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.community.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">👁️</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalAttention.toLocaleString() }}</div>
-          <div class="metric-label">总关注度</div>
+          <div class="metric-label">{{ t(page.community.stats.totalAttention) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">⭐</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalStars.toLocaleString() }}</div>
-          <div class="metric-label">总星标数</div>
+          <div class="metric-label">{{ t(page.community.stats.totalStars) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🔱</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalForks.toLocaleString() }}</div>
-          <div class="metric-label">总Fork数</div>
+          <div class="metric-label">{{ t(page.community.stats.totalForks) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">👥</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalParticipants.toLocaleString() }}</div>
-          <div class="metric-label">总参与者</div>
+          <div class="metric-label">{{ t(page.community.stats.totalParticipants) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🔥 关注度排行 Top 20</h3>
+        <h3 class="chart-title">{{ t(page.community.charts.attentionRanking) }}</h3>
         <div ref="attentionRankRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">⭐ Star vs Fork 关系</h3>
+        <h3 class="chart-title"> {{ t(page.community.charts.starForkRelationship) }}</h3>
         <div ref="starForkRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">💬 社区互动热度</h3>
+        <h3 class="chart-title"> {{ t(page.community.charts.communityInteractionHeat) }}</h3>
         <div ref="interactionRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

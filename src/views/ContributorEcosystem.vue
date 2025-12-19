@@ -1,8 +1,8 @@
 <template>
   <div class="contributor-ecosystem">
     <header class="page-header">
-      <h1 class="page-title">贡献者生态</h1>
-      <p class="page-subtitle">Contributor Ecosystem - 社区健康度和风险分析</p>
+      <h1 class="page-title">{{ t(page.contributor.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.contributor.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">🚌</div>
         <div class="metric-content">
           <div class="metric-value">{{ avgBusFactor.toFixed(1) }}</div>
-          <div class="metric-label">平均巴士因子</div>
+          <div class="metric-label">{{ t(page.contributor.stats.avgBusFactor) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">👥</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalParticipants.toLocaleString() }}</div>
-          <div class="metric-label">总参与者数</div>
+          <div class="metric-label">{{ t(page.contributor.stats.totalParticipants) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🌟</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalNewContributors }}</div>
-          <div class="metric-label">新贡献者总数</div>
+          <div class="metric-label">{{ t(page.contributor.stats.totalNewContributors) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">😴</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalInactiveContributors }}</div>
-          <div class="metric-label">不活跃贡献者</div>
+          <div class="metric-label">{{ t(page.contributor.stats.inactiveContributors) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">🚌 巴士因子分布</h3>
+        <h3 class="chart-title">{{ t(page.contributor.charts.busFactorDistribution) }}</h3>
         <div ref="busFactorRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">📧 贡献者邮箱生态</h3>
+        <h3 class="chart-title"> {{ t(page.contributor.charts.emailEcosystem) }}</h3>
         <div ref="emailRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">👤 参与者规模分布</h3>
+        <h3 class="chart-title"> {{ t(page.contributor.charts.participantsSizeDistribution) }}</h3>
         <div ref="participantsRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseMaybeJSON, parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

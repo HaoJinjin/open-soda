@@ -1,5 +1,5 @@
 <template>
-  <div class="indicator-statistics">
+  <div class="indicator-statistics" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
       <h1 class="page-title">📊 指标统计分析</h1>
       <p class="page-subtitle">Indicator Statistics - 6大核心指标深度分析</p>
@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
 
@@ -370,14 +370,28 @@ const renderTop10Comparison = () => {
     }))
   })
 }
+const pageHeight = ref(window.innerHeight)
+// 更新页面高度
+const updatePageHeight = () => {
+  pageHeight.value = window.innerHeight
+}
+
 
 onMounted(() => {
   loadStatistics()
+  window.addEventListener('resize', updatePageHeight)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updatePageHeight)
 })
 </script>
 
 <style scoped>
 .indicator-statistics {
+  width: 100%;
+      overflow-y: auto;
+  box-sizing: border-box;
   padding: 20px;
   background: #000;
   min-height: 100vh;

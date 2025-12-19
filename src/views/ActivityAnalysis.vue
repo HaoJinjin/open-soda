@@ -1,8 +1,8 @@
 <template>
   <div class="activity-analysis">
     <header class="page-header">
-      <h1 class="page-title">活跃度分析</h1>
-      <p class="page-subtitle">Activity Analysis - 项目活跃程度和发展趋势</p>
+      <h1 class="page-title">{{ t(page.activity.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.activity.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">📊</div>
         <div class="metric-content">
           <div class="metric-value">{{ avgActivity.toFixed(2) }}</div>
-          <div class="metric-label">平均活跃度</div>
+          <div class="metric-label">{{ t(page.activity.stats.avgActivity) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">👥</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalNewContributors }}</div>
-          <div class="metric-label">新贡献者总数</div>
+          <div class="metric-label">{{ t(page.activity.stats.newContributors) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">😴</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalInactiveContributors }}</div>
-          <div class="metric-label">不活跃贡献者</div>
+          <div class="metric-label">{{ t(page.activity.stats.inactiveContributors) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">🔥</div>
         <div class="metric-content">
           <div class="metric-value">{{ activeProjects }}</div>
-          <div class="metric-label">高活跃项目数</div>
+          <div class="metric-label">{{ t(page.activity.stats.activeProjects) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📈 活跃度趋势分布</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.activityTrend) }}</h3>
         <div ref="activityTrendRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">👑 Top 10 活跃项目</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.topActiveProjects) }}</h3>
         <div ref="topActiveRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">🌟 新贡献者分布</h3>
+        <h3 class="chart-title">{{ t(page.activity.charts.newContributorsDistribution) }}</h3>
         <div ref="newContributorsRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseMaybeJSON, parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

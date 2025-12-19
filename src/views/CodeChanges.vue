@@ -1,8 +1,8 @@
 <template>
   <div class="code-changes">
     <header class="page-header">
-      <h1 class="page-title">PR & 代码变更</h1>
-      <p class="page-subtitle">Pull Request & Code Changes - 开发活动强度展示</p>
+      <h1 class="page-title">{{ t(page.code.title) }}</h1>
+      <p class="page-subtitle">{{ t(page.code.subtitle) }}</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,28 +11,28 @@
         <div class="metric-icon">🔀</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalPRs.toLocaleString() }}</div>
-          <div class="metric-label">PR总数</div>
+          <div class="metric-label">{{ t(page.code.stats.totalPRs) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">✅</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalAcceptedPRs.toLocaleString() }}</div>
-          <div class="metric-label">已接受PR</div>
+          <div class="metric-label">{{ t(page.code.stats.acceptedPRs) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">➕</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalLinesAdded.toLocaleString() }}</div>
-          <div class="metric-label">新增代码行</div>
+          <div class="metric-label">{{ t(page.code.stats.linesAdded) }}</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">➖</div>
         <div class="metric-content">
           <div class="metric-value">{{ totalLinesRemoved.toLocaleString() }}</div>
-          <div class="metric-label">删除代码行</div>
+          <div class="metric-label">{{ t(page.code.stats.linesRemoved) }}</div>
         </div>
       </div>
     </div>
@@ -40,17 +40,17 @@
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-box full-width">
-        <h3 class="chart-title">📊 代码变更量 Top 20</h3>
+        <h3 class="chart-title">{{ t(page.code.charts.codeChangeTop) }}</h3>
         <div ref="codeChangeRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">🔀 PR接受率分布</h3>
+        <h3 class="chart-title">{{ t(page.code.charts.prAcceptanceRate) }}</h3>
         <div ref="prAcceptanceRef" class="chart"></div>
       </div>
-      
+
       <div class="chart-box">
-        <h3 class="chart-title">📝 PR评审活跃度</h3>
+        <h3 class="chart-title"> {{ t(page.code.charts.prReviewActivity) }}</h3>
         <div ref="prReviewsRef" class="chart"></div>
       </div>
     </div>
@@ -62,6 +62,8 @@ import { ref, onMounted, computed } from "vue"
 import * as echarts from "echarts"
 import raw from "@/utils/converted_data.json"
 import { parseNumber } from "@/utils/parse"
+import { useTranslations } from "@/composables/useTranslations"
+const { t, page } = useTranslations()
 
 const projects = raw.map(p => ({
   ...p,

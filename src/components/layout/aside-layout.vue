@@ -6,21 +6,22 @@
         <h2>OpenSODA</h2>
         <div class="logo-divider"></div>
       </div>
-      
+
       <ul class="menu-list">
-        <li 
+        <li
           v-for="m in menus"
           :key="m.key"
           :class="{active: current===m.key}"
           @click="selectMenu(m)"
           class="menu-item"
         >
-          <span class="menu-title">{{ m.title }}</span>
+          <span class="menu-title">{{ $t(`menu.${m.key}`) }}</span>
         </li>
       </ul>
-      
+
       <div class="menu-footer">
-        <div class="tech-badge">OpenDigger</div>
+        <LanguageSwitcher />
+        <div class="tech-badge">{{ $t('layout.openDigger') }}</div>
       </div>
     </aside>
   </div>
@@ -29,27 +30,27 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue"
 
 const router = useRouter()
 
 interface Menu {
   key: string
-  title: string
 }
 
 const current = ref("overview")
 
 const menus: Menu[] = [
-  { key: "overview", title: "全局总览" },
-  { key: "activity", title: "活跃度分析" },
-  { key: "impact", title: "影响力分析" },
-  { key: "contributor", title: "贡献者生态" },
-  { key: "issue", title: "Issue 生命周期" },
-  { key: "code", title: "PR & 代码变更" },
-  { key: "community", title: "社区关注度" },
-  { key: "fork-prediction", title: "🔱 Fork 预测" },
-  { key: "indicator-statistics", title: "📊 指标统计" },
-  { key: "response-time-prediction", title: "⏱️ 响应时间预测" }
+  { key: "overview" },
+  { key: "activity" },
+  { key: "impact" },
+  { key: "contributor" },
+  { key: "issue" },
+  { key: "code" },
+  { key: "community" },
+  { key: "forkPrediction" },
+  { key: "indicatorStatistics" },
+  { key: "responseTimePrediction" }
 ]
 
 function selectMenu(m: Menu) {
@@ -77,13 +78,13 @@ function selectMenu(m: Menu) {
     case "community":
       router.push({ name: "community" })
       break
-    case "fork-prediction":
+    case "forkPrediction":
       router.push({ name: "forkPrediction" })
       break
-    case "indicator-statistics":
+    case "indicatorStatistics":
       router.push({ name: "indicatorStatistics" })
       break
-    case "response-time-prediction":
+    case "responseTimePrediction":
       router.push({ name: "responseTimePrediction" })
       break
     default:
@@ -263,10 +264,11 @@ function selectMenu(m: Menu) {
 }
 
 .menu-footer {
-  padding: 20px;
+  padding: 15px 0;
   text-align: center;
   position: relative;
   z-index: 1;
+  border-top: 1px solid rgba(0, 242, 254, 0.2);
 }
 
 .tech-badge {
@@ -284,6 +286,7 @@ function selectMenu(m: Menu) {
     inset 0 1px 0 rgba(0, 242, 254, 0.2);
   text-transform: uppercase;
   animation: badgePulse 2s ease-in-out infinite;
+  margin-top: 10px;
 }
 
 @keyframes badgePulse {
