@@ -108,7 +108,7 @@ function renderActivityTrend() {
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
     xAxis: {
       type: 'category',
-      data: sorted.map((_, i) => `项目${i + 1}`),
+      data: sorted.map((p, i) => p.projectname|| p.projectname2),
       axisLine: { lineStyle: { color: '#00f2fe' } },
       axisLabel: { color: '#a0d2eb', interval: 20 }
     },
