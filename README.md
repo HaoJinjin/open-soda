@@ -7,7 +7,7 @@ OpenSODA 是一个开源数据分析和可视化平台，专注于展示和分�
 本项目基于 300 个热门开源项目的详细数据构建，涵盖了从项目活跃度、影响力、贡献者生态到 Issue 生命周期等多个维度的指标。通过直观的可视化界面，用户可以轻松探索和比较不同项目的各项关键指标。
 
 ## 快速开始
-1. 克隆项目代码：`git clone https://github.com/OpenSODA/OpenSODA.git`
+1. 克隆项目代码：`git clone https://github.com/HaoJinjin/open-soda.git`
 2. 进入项目目录：`cd OpenSODA`
 3. 安装依赖：`npm install`
 4. 启动后端服务：`python backend/main.py`
