@@ -62,8 +62,8 @@
 
         <!-- 指标分布图 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📊 指标统计分布</h3>
-          <div ref="distributionRef" class="chart"></div>
+          <h3 class="chart-title">📊 指标统计分布（基于 {{ projectsDetail.length }} 个项目的实际数据）</h3>
+          <div ref="distributionRef" class="chart-distribution"></div>
         </div>
 
         <!-- Top10 项目对比图 -->
@@ -123,6 +123,7 @@ const metadata = ref<any>({})
 const indicatorStats = ref<any[]>([])
 const correlationMatrix = ref<any>({})
 const top10Projects = ref<any[]>([])
+const projectsDetail = ref<any[]>([])  // ✅ 新增：所有项目的详细数据
 
 // 图表引用
 const heatmapRef = ref<HTMLElement>()
@@ -144,6 +145,7 @@ const loadStatistics = async () => {
       indicatorStats.value = data.indicator_statistics
       correlationMatrix.value = data.correlation_matrix
       top10Projects.value = data.top10_projects
+      projectsDetail.value = data.projects_detail || []  // ✅ 新增：获取详细数据
 
       // 先关闭 loading，让 DOM 渲染
       loading.value = false
@@ -174,7 +176,7 @@ const renderCharts = () => {
   renderTop10Comparison()
 }
 
-// 1. 相关性热力图
+// 1. 相关性热力图（下三角形式，避免重复）
 const renderHeatmap = () => {
   if (!heatmapRef.value) return
 
@@ -194,24 +196,25 @@ const renderHeatmap = () => {
     'participants': '参与者总数'
   }
 
+  // ✅ 只保留下三角数据（i >= j），避免重复
   const heatmapData: any[] = []
   indicators.forEach((row, i) => {
     indicators.forEach((col, j) => {
-      const value = correlationMatrix.value[row]?.[col]
-      if (value !== undefined && value !== null) {
-        heatmapData.push([i, j, value.toFixed(3)])
+      if (i >= j) {  // ✅ 只保留下三角（包括对角线）
+        const value = correlationMatrix.value[row]?.[col]
+        if (value !== undefined && value !== null) {
+          heatmapData.push([j, i, value.toFixed(3)])  // 注意：[j, i] 而不是 [i, j]
+        }
       }
     })
   })
-
-  console.log('📊 热力图数据点数:', heatmapData.length)
 
   chart.setOption({
     backgroundColor: 'transparent',
     tooltip: {
       position: 'top',
       formatter: (params: any) => {
-        return `${indicatorNames[indicators[params.data[0]]]} <br/> ${indicatorNames[indicators[params.data[1]]]} <br/> 相关系数: ${params.data[2]}`
+        return `${indicatorNames[indicators[params.data[1]]]} <br/> ${indicatorNames[indicators[params.data[0]]]} <br/> 相关系数: ${params.data[2]}`
       }
     },
     grid: {
@@ -266,65 +269,202 @@ const renderHeatmap = () => {
   })
 }
 
-// 2. 指标分布图
+// 2. 指标分布图（使用 projects_detail 绘制真实的分布直方图）
 const renderDistribution = () => {
   if (!distributionRef.value) return
+  if (!projectsDetail.value || projectsDetail.value.length === 0) return
 
   const chart = echarts.init(distributionRef.value)
 
+  const indicatorNames: any = {
+    'inactive_contributors': '非活跃贡献者',
+    'issues_and_change_request_active': '活跃工单/PR',
+    'issues_closed': '已关闭工单',
+    'issues_new': '新增工单',
+    'new_contributors': '新贡献者',
+    'participants': '参与者总数'
+  }
+
+  const indicators = metadata.value.analysis_indicators || []
+
+  // 为每个指标创建一个系列（直方图）
+  const series = indicators.map((indicator: string) => {
+    // 获取该指标的所有数据
+    const values = projectsDetail.value
+      .map(p => p[indicator])
+      .filter(v => v !== null && v !== undefined && !isNaN(v))
+
+    if (values.length === 0) return null
+
+    // 计算 95 分位数作为上限（过滤极端值）
+    const sortedValues = [...values].sort((a, b) => a - b)
+    const p95Index = Math.floor(sortedValues.length * 0.95)
+    const maxVal = sortedValues[p95Index]
+
+    // 过滤数据
+    const filteredValues = values.filter(v => v <= maxVal)
+
+    // 计算直方图分箱（30 个箱）
+    const binCount = 30
+    const minVal = Math.min(...filteredValues)
+    const binWidth = (maxVal - minVal) / binCount
+
+    const bins = new Array(binCount).fill(0)
+    filteredValues.forEach(v => {
+      const binIndex = Math.min(Math.floor((v - minVal) / binWidth), binCount - 1)
+      bins[binIndex]++
+    })
+
+    // 计算统计值
+    const mean = values.reduce((a, b) => a + b, 0) / values.length
+    const median = sortedValues[Math.floor(sortedValues.length / 2)]
+
+    return {
+      indicator,
+      indicatorName: indicatorNames[indicator],
+      bins,
+      binWidth,
+      minVal,
+      mean,
+      median
+    }
+  }).filter(s => s !== null)
+
+  // 使用多个子图（grid）来显示每个指标的分布
+  const cols = 3
+
+  const grids: any[] = []
+  const xAxes: any[] = []
+  const yAxes: any[] = []
+  const seriesData: any[] = []
+  const titles: any[] = []
+
+  series.forEach((s: any, idx: number) => {
+    const row = Math.floor(idx / cols)
+    const col = idx % cols
+
+    // ✅ 优化布局：增加行间距，避免标题重叠
+    const gridLeft = 5 + col * 32 + '%'
+    const gridTop = 8 + row * 48 + '%'  // 增加行间距（从 45% 改为 48%）
+    const gridWidth = '28%'
+    const gridHeight = '32%'  // 减小高度（从 35% 改为 32%）
+
+    grids.push({
+      left: gridLeft,
+      top: gridTop,
+      width: gridWidth,
+      height: gridHeight
+    })
+
+    // ✅ 标题单独配置，避免重叠
+    titles.push({
+      text: s.indicatorName,
+      left: gridLeft,
+      top: `calc(${gridTop} - 50px)`,  // 标题在 grid 上方 25px
+      textStyle: {
+        color: '#00d4ff',  // 使用主题色
+        fontSize: 13,
+        fontWeight: 'bold'
+      }
+    })
+
+    xAxes.push({
+      gridIndex: idx,
+      type: 'category',
+      data: s.bins.map((_: any) => ''),  // 不显示具体数值
+      axisLabel: { show: false },
+      axisLine: { lineStyle: { color: '#333' } },
+      axisTick: { show: false }
+    })
+
+    yAxes.push({
+      gridIndex: idx,
+      type: 'value',
+      axisLabel: {
+        color: '#999',
+        fontSize: 10,
+        formatter: (value: number) => value.toFixed(0)  // 只显示整数
+      },
+      axisLine: { lineStyle: { color: '#333' } },
+      splitLine: { lineStyle: { color: '#222', type: 'dashed' } }  // 虚线网格
+    })
+
+    // ✅ 优化配色：使用渐变色
+    const colors = [
+      '#00d4ff',  // 非活跃贡献者
+      '#0066ff',  // 活跃工单/PR
+      '#ff6b6b',  // 已关闭工单
+      '#ffaa00',  // 新增工单
+      '#00ff88',  // 新贡献者
+      '#ff44ff'   // 参与者总数
+    ]
+
+    seriesData.push({
+      name: s.indicatorName,
+      type: 'bar',
+      xAxisIndex: idx,
+      yAxisIndex: idx,
+      data: s.bins,
+      itemStyle: {
+        color: colors[idx % 6],
+        borderRadius: [2, 2, 0, 0]  // 圆角顶部
+      },
+      barWidth: '100%',
+      label: {
+        show: false
+      },
+      markLine: {
+        symbol: 'none',
+        silent: true,  // 不响应鼠标事件
+        data: [
+          {
+            name: '均值',
+            xAxis: Math.floor((s.mean - s.minVal) / s.binWidth),
+            lineStyle: { color: '#ff4444', type: 'dashed', width: 2 },
+            label: {
+              show: true,
+              position: 'end',
+              formatter: '均值',
+              color: '#ff4444',
+              fontSize: 10
+            }
+          },
+          {
+            name: '中位数',
+            xAxis: Math.floor((s.median - s.minVal) / s.binWidth),
+            lineStyle: { color: '#4444ff', type: 'dashed', width: 2 },
+            label: {
+              show: true,
+              position: 'end',
+              formatter: '中位数',
+              color: '#4444ff',
+              fontSize: 10
+            }
+          }
+        ]
+      }
+    })
+  })
+
   chart.setOption({
     backgroundColor: 'transparent',
+    title: titles,  // ✅ 使用单独配置的标题数组
     tooltip: {
       trigger: 'axis',
-      axisPointer: { type: 'shadow' }
-    },
-    legend: {
-      data: ['平均值', '中位数', '标准差'],
+      axisPointer: { type: 'shadow' },
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      borderColor: '#333',
       textStyle: { color: '#fff' },
-      top: '5%'
-    },
-    grid: {
-      left: '10%',
-      right: '10%',
-      top: '15%',
-      bottom: '15%'
-    },
-    xAxis: {
-      type: 'category',
-      data: indicatorStats.value.map(s => s.indicator_name),
-      axisLabel: {
-        color: '#fff',
-        rotate: 30,
-        fontSize: 11
-      },
-      axisLine: { lineStyle: { color: '#333' } }
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel: { color: '#999' },
-      axisLine: { lineStyle: { color: '#333' } },
-      splitLine: { lineStyle: { color: '#222' } }
-    },
-    series: [
-      {
-        name: '平均值',
-        type: 'bar',
-        data: indicatorStats.value.map(s => s.mean.toFixed(2)),
-        itemStyle: { color: '#00d4ff' }
-      },
-      {
-        name: '中位数',
-        type: 'bar',
-        data: indicatorStats.value.map(s => s.median.toFixed(2)),
-        itemStyle: { color: '#0066ff' }
-      },
-      {
-        name: '标准差',
-        type: 'bar',
-        data: indicatorStats.value.map(s => s.std.toFixed(2)),
-        itemStyle: { color: '#ff6b6b' }
+      formatter: (params: any) => {
+        if (!params || params.length === 0) return ''
+        const param = params[0]
+        return `${param.seriesName}<br/>频次: ${param.value}`
       }
-    ]
+    },
+    grid: grids,
+    xAxis: xAxes,
+    yAxis: yAxes,
+    series: seriesData
   })
 }
 
@@ -568,6 +708,11 @@ onUnmounted(() => {
 .chart {
   width: 100%;
   height: 450px;
+}
+
+.chart-distribution {
+  width: 100%;
+  height: 700px;  /* 更高，容纳 6 个子图（2 行 × 3 列） */
 }
 
 /* 表格样式 */

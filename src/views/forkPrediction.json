@@ -1,752 +1,746 @@
 {
-    "success": true,
-    "data": {
-        "predictions": {
-            "metadata": {
-                "target_column": "technical_fork",
-                "feature_columns": [
-                    "feat_activity",
-                    "feat_attention",
-                    "feat_bus_factor",
-                    "feat_change_requests",
-                    "feat_change_requests_accepted",
-                    "feat_change_requests_reviews",
-                    "feat_code_change_lines_add",
-                    "feat_code_change_lines_remove",
-                    "feat_code_change_lines_sum",
-                    "feat_inactive_contributors",
-                    "feat_issues_and_change_request_active",
-                    "feat_issues_closed",
-                    "feat_issues_new",
-                    "feat_issue_comments",
-                    "feat_meta",
-                    "feat_new_contributors",
-                    "feat_openrank",
-                    "feat_participants",
-                    "feat_stars"
-                ],
-                "total_samples": 300,
-                "valid_samples": 300,
-                "train_samples": 210,
-                "test_samples": 90,
-                "metrics": {
-                    "R2_score": 0.3567,
-                    "RMSE": "9.25e+02",
-                    "MAE": "1.55e+02"
-                }
-            },
-            "predictions": [
-                {
-                    "project_name": "microsoft",
-                    "true_value": 595,
-                    "predicted_value": 273.82,
-                    "absolute_error": 321.18,
-                    "relative_error_percent": 53.98
-                },
-                {
-                    "project_name": "storybookjs",
-                    "true_value": 4,
-                    "predicted_value": 33.52,
-                    "absolute_error": 29.52,
-                    "relative_error_percent": 738
-                },
-                {
-                    "project_name": "grafana",
-                    "true_value": 49,
-                    "predicted_value": 76.45,
-                    "absolute_error": 27.45,
-                    "relative_error_percent": 56.02
-                },
-                {
-                    "project_name": "Azure",
-                    "true_value": 1,
-                    "predicted_value": 11.57,
-                    "absolute_error": 10.57,
-                    "relative_error_percent": 1056.64
-                },
-                {
-                    "project_name": "pandas-dev",
-                    "true_value": 74,
-                    "predicted_value": 81.3,
-                    "absolute_error": 7.3,
-                    "relative_error_percent": 9.87
-                },
-                {
-                    "project_name": "openjournals",
-                    "true_value": 1,
-                    "predicted_value": 9.91,
-                    "absolute_error": 8.91,
-                    "relative_error_percent": 890.75
-                },
-                {
-                    "project_name": "microsoft",
-                    "true_value": 10,
-                    "predicted_value": 11.78,
-                    "absolute_error": 1.78,
-                    "relative_error_percent": 17.79
-                },
-                {
-                    "project_name": "dotnet",
-                    "true_value": 1,
-                    "predicted_value": 8.47,
-                    "absolute_error": 7.47,
-                    "relative_error_percent": 746.95
-                },
-                {
-                    "project_name": "Azure",
-                    "true_value": 8,
-                    "predicted_value": 8.54,
-                    "absolute_error": 0.54,
-                    "relative_error_percent": 6.75
-                },
-                {
-                    "project_name": "kubernetes",
-                    "true_value": 1,
-                    "predicted_value": 33.52,
-                    "absolute_error": 32.52,
-                    "relative_error_percent": 3251.67
-                },
-                {
-                    "project_name": "ppy",
-                    "true_value": 1,
-                    "predicted_value": 9.25,
-                    "absolute_error": 8.25,
-                    "relative_error_percent": 825.33
-                },
-                {
-                    "project_name": "angular",
-                    "true_value": 89,
-                    "predicted_value": 58.22,
-                    "absolute_error": 30.78,
-                    "relative_error_percent": 34.59
-                },
-                {
-                    "project_name": "o3de",
-                    "true_value": 825,
-                    "predicted_value": 216.42,
-                    "absolute_error": 608.58,
-                    "relative_error_percent": 73.77
-                },
-                {
-                    "project_name": "RocketChat",
-                    "true_value": 66,
-                    "predicted_value": 118.75,
-                    "absolute_error": 52.75,
-                    "relative_error_percent": 79.92
-                },
-                {
-                    "project_name": "macports",
-                    "true_value": 18,
-                    "predicted_value": 8.85,
-                    "absolute_error": 9.15,
-                    "relative_error_percent": 50.86
-                },
-                {
-                    "project_name": "open-mmlab",
-                    "true_value": 43,
-                    "predicted_value": 49.04,
-                    "absolute_error": 6.04,
-                    "relative_error_percent": 14.04
-                },
-                {
-                    "project_name": "webcompat",
-                    "true_value": 4,
-                    "predicted_value": 11.62,
-                    "absolute_error": 7.62,
-                    "relative_error_percent": 190.51
-                },
-                {
-                    "project_name": "newrelic",
-                    "true_value": 1,
-                    "predicted_value": 14.61,
-                    "absolute_error": 13.61,
-                    "relative_error_percent": 1361.45
-                },
-                {
-                    "project_name": "golang",
-                    "true_value": 119,
-                    "predicted_value": 128.41,
-                    "absolute_error": 9.41,
-                    "relative_error_percent": 7.91
-                },
-                {
-                    "project_name": "idsb3t1",
-                    "true_value": 2,
-                    "predicted_value": 8.9,
-                    "absolute_error": 6.9,
-                    "relative_error_percent": 345.25
-                },
-                {
-                    "project_name": "archway-network",
-                    "true_value": 10355,
-                    "predicted_value": 1866.18,
-                    "absolute_error": 8488.82,
-                    "relative_error_percent": 81.98
-                },
-                {
-                    "project_name": "dotnet",
-                    "true_value": 111,
-                    "predicted_value": 150.32,
-                    "absolute_error": 39.32,
-                    "relative_error_percent": 35.43
-                },
-                {
-                    "project_name": "rapid7",
-                    "true_value": 119,
-                    "predicted_value": 90.04,
-                    "absolute_error": 28.96,
-                    "relative_error_percent": 24.33
-                },
-                {
-                    "project_name": "ray-project",
-                    "true_value": 1,
-                    "predicted_value": 14.33,
-                    "absolute_error": 13.33,
-                    "relative_error_percent": 1333.12
-                },
-                {
-                    "project_name": "denoland",
-                    "true_value": 147,
-                    "predicted_value": 266.75,
-                    "absolute_error": 119.75,
-                    "relative_error_percent": 81.46
-                },
-                {
-                    "project_name": "PrestaShop",
-                    "true_value": 61,
-                    "predicted_value": 42.51,
-                    "absolute_error": 18.49,
-                    "relative_error_percent": 30.31
-                },
-                {
-                    "project_name": "type-challenges",
-                    "true_value": 56,
-                    "predicted_value": 117.23,
-                    "absolute_error": 61.23,
-                    "relative_error_percent": 109.35
-                },
-                {
-                    "project_name": "yuzu-emu",
-                    "true_value": 205,
-                    "predicted_value": 147.22,
-                    "absolute_error": 57.78,
-                    "relative_error_percent": 28.19
-                },
-                {
-                    "project_name": "hashicorp",
-                    "true_value": 11,
-                    "predicted_value": 13.78,
-                    "absolute_error": 2.78,
-                    "relative_error_percent": 25.28
-                },
-                {
-                    "project_name": "prisma",
-                    "true_value": 31,
-                    "predicted_value": 15.08,
-                    "absolute_error": 15.92,
-                    "relative_error_percent": 51.35
-                },
-                {
-                    "project_name": "Expensify",
-                    "true_value": 47,
-                    "predicted_value": 32.71,
-                    "absolute_error": 14.29,
-                    "relative_error_percent": 30.41
-                },
-                {
-                    "project_name": "huggingface",
-                    "true_value": 243,
-                    "predicted_value": 122.76,
-                    "absolute_error": 120.24,
-                    "relative_error_percent": 49.48
-                },
-                {
-                    "project_name": "MicrosoftDocs",
-                    "true_value": 191,
-                    "predicted_value": 93.42,
-                    "absolute_error": 97.58,
-                    "relative_error_percent": 51.09
-                },
-                {
-                    "project_name": "JuliaLang",
-                    "true_value": 76,
-                    "predicted_value": 95.73,
-                    "absolute_error": 19.73,
-                    "relative_error_percent": 25.96
-                },
-                {
-                    "project_name": "nrfconnect",
-                    "true_value": 22,
-                    "predicted_value": 14.41,
-                    "absolute_error": 7.59,
-                    "relative_error_percent": 34.49
-                },
-                {
-                    "project_name": "electron",
-                    "true_value": 59,
-                    "predicted_value": 97.37,
-                    "absolute_error": 38.37,
-                    "relative_error_percent": 65.04
-                },
-                {
-                    "project_name": "Azure",
-                    "true_value": 14,
-                    "predicted_value": 9.54,
-                    "absolute_error": 4.46,
-                    "relative_error_percent": 31.84
-                },
-                {
-                    "project_name": "ccxt",
-                    "true_value": 2,
-                    "predicted_value": 10.44,
-                    "absolute_error": 8.44,
-                    "relative_error_percent": 422.11
-                },
-                {
-                    "project_name": "SerenityOS",
-                    "true_value": 6,
-                    "predicted_value": 11.18,
-                    "absolute_error": 5.18,
-                    "relative_error_percent": 86.27
-                },
-                {
-                    "project_name": "apache",
-                    "true_value": 261,
-                    "predicted_value": 195.21,
-                    "absolute_error": 65.79,
-                    "relative_error_percent": 25.21
-                },
-                {
-                    "project_name": "cloudflare",
-                    "true_value": 2,
-                    "predicted_value": 24.45,
-                    "absolute_error": 22.45,
-                    "relative_error_percent": 1122.66
-                },
-                {
-                    "project_name": "apple",
-                    "true_value": 3250,
-                    "predicted_value": 3721.18,
-                    "absolute_error": 471.18,
-                    "relative_error_percent": 14.5
-                },
-                {
-                    "project_name": "vercel",
-                    "true_value": 154,
-                    "predicted_value": 330.41,
-                    "absolute_error": 176.41,
-                    "relative_error_percent": 114.55
-                },
-                {
-                    "project_name": "ansible",
-                    "true_value": 122,
-                    "predicted_value": 177.49,
-                    "absolute_error": 55.49,
-                    "relative_error_percent": 45.48
-                },
-                {
-                    "project_name": "appsmithorg",
-                    "true_value": 2,
-                    "predicted_value": 15.2,
-                    "absolute_error": 13.2,
-                    "relative_error_percent": 659.92
-                },
-                {
-                    "project_name": "apache",
-                    "true_value": 55,
-                    "predicted_value": 55.14,
-                    "absolute_error": 0.14,
-                    "relative_error_percent": 0.25
-                },
-                {
-                    "project_name": "php",
-                    "true_value": 103,
-                    "predicted_value": 76.96,
-                    "absolute_error": 26.04,
-                    "relative_error_percent": 25.28
-                },
-                {
-                    "project_name": "openssl",
-                    "true_value": 50,
-                    "predicted_value": 33.81,
-                    "absolute_error": 16.19,
-                    "relative_error_percent": 32.37
-                },
-                {
-                    "project_name": "dotnet",
-                    "true_value": 2,
-                    "predicted_value": 9.04,
-                    "absolute_error": 7.04,
-                    "relative_error_percent": 352.03
-                },
-                {
-                    "project_name": "openwrt",
-                    "true_value": 20,
-                    "predicted_value": 8.54,
-                    "absolute_error": 11.46,
-                    "relative_error_percent": 57.3
-                },
-                {
-                    "project_name": "llvm",
-                    "true_value": 48,
-                    "predicted_value": 8.47,
-                    "absolute_error": 39.53,
-                    "relative_error_percent": 82.36
-                },
-                {
-                    "project_name": "github",
-                    "true_value": 2350,
-                    "predicted_value": 335.65,
-                    "absolute_error": 2014.35,
-                    "relative_error_percent": 85.72
-                },
-                {
-                    "project_name": "project-chip",
-                    "true_value": 65,
-                    "predicted_value": 62.42,
-                    "absolute_error": 2.58,
-                    "relative_error_percent": 3.97
-                },
-                {
-                    "project_name": "apache",
-                    "true_value": 89,
-                    "predicted_value": 123.32,
-                    "absolute_error": 34.32,
-                    "relative_error_percent": 38.57
-                },
-                {
-                    "project_name": "zero-to-mastery",
-                    "true_value": 49,
-                    "predicted_value": 27.95,
-                    "absolute_error": 21.05,
-                    "relative_error_percent": 42.97
-                },
-                {
-                    "project_name": "tgstation",
-                    "true_value": 58,
-                    "predicted_value": 44.21,
-                    "absolute_error": 13.79,
-                    "relative_error_percent": 23.78
-                },
-                {
-                    "project_name": "conda-forge",
-                    "true_value": 2,
-                    "predicted_value": 8.54,
-                    "absolute_error": 6.54,
-                    "relative_error_percent": 327.01
-                },
-                {
-                    "project_name": "cilium",
-                    "true_value": 2,
-                    "predicted_value": 11.18,
-                    "absolute_error": 9.18,
-                    "relative_error_percent": 458.8
-                },
-                {
-                    "project_name": "microsoft",
-                    "true_value": 115,
-                    "predicted_value": 126.93,
-                    "absolute_error": 11.93,
-                    "relative_error_percent": 10.38
-                },
-                {
-                    "project_name": "JuliaRegistries",
-                    "true_value": 2,
-                    "predicted_value": 16.73,
-                    "absolute_error": 14.73,
-                    "relative_error_percent": 736.72
-                },
-                {
-                    "project_name": "oppia",
-                    "true_value": 24,
-                    "predicted_value": 13.16,
-                    "absolute_error": 10.84,
-                    "relative_error_percent": 45.16
-                },
-                {
-                    "project_name": "ankidroid",
-                    "true_value": 6,
-                    "predicted_value": 8.54,
-                    "absolute_error": 2.54,
-                    "relative_error_percent": 42.34
-                },
-                {
-                    "project_name": "Azure",
-                    "true_value": 25,
-                    "predicted_value": 15.33,
-                    "absolute_error": 9.67,
-                    "relative_error_percent": 38.66
-                },
-                {
-                    "project_name": "matplotlib",
-                    "true_value": 61,
-                    "predicted_value": 75.08,
-                    "absolute_error": 14.08,
-                    "relative_error_percent": 23.08
-                },
-                {
-                    "project_name": "kubernetes",
-                    "true_value": 5,
-                    "predicted_value": 10.25,
-                    "absolute_error": 5.25,
-                    "relative_error_percent": 105.09
-                },
-                {
-                    "project_name": "MarlinFirmware",
-                    "true_value": 120,
-                    "predicted_value": 87.15,
-                    "absolute_error": 32.85,
-                    "relative_error_percent": 27.38
-                },
-                {
-                    "project_name": "JacksonKearl",
-                    "true_value": 1,
-                    "predicted_value": 9.37,
-                    "absolute_error": 8.37,
-                    "relative_error_percent": 836.89
-                },
-                {
-                    "project_name": "ruffle-rs",
-                    "true_value": 17,
-                    "predicted_value": 8.47,
-                    "absolute_error": 8.53,
-                    "relative_error_percent": 50.18
-                },
-                {
-                    "project_name": "alibaba",
-                    "true_value": 127,
-                    "predicted_value": 9.91,
-                    "absolute_error": 117.09,
-                    "relative_error_percent": 92.2
-                },
-                {
-                    "project_name": "matrix-org",
-                    "true_value": 1,
-                    "predicted_value": 10.54,
-                    "absolute_error": 9.54,
-                    "relative_error_percent": 953.74
-                },
-                {
-                    "project_name": "docker",
-                    "true_value": 10,
-                    "predicted_value": 11.04,
-                    "absolute_error": 1.04,
-                    "relative_error_percent": 10.4
-                },
-                {
-                    "project_name": "expo",
-                    "true_value": 7,
-                    "predicted_value": 14.33,
-                    "absolute_error": 7.33,
-                    "relative_error_percent": 104.73
-                },
-                {
-                    "project_name": "openvinotoolkit",
-                    "true_value": 29,
-                    "predicted_value": 42.22,
-                    "absolute_error": 13.22,
-                    "relative_error_percent": 45.58
-                },
-                {
-                    "project_name": "microsoft",
-                    "true_value": 53,
-                    "predicted_value": 83.57,
-                    "absolute_error": 30.57,
-                    "relative_error_percent": 57.68
-                },
-                {
-                    "project_name": "filecoin-project",
-                    "true_value": 4,
-                    "predicted_value": 9.04,
-                    "absolute_error": 5.04,
-                    "relative_error_percent": 126.06
-                },
-                {
-                    "project_name": "uBlockOrigin",
-                    "true_value": 6,
-                    "predicted_value": 10.27,
-                    "absolute_error": 4.27,
-                    "relative_error_percent": 71.2
-                },
-                {
-                    "project_name": "azerothcore",
-                    "true_value": 1,
-                    "predicted_value": 8.54,
-                    "absolute_error": 7.54,
-                    "relative_error_percent": 754.02
-                },
-                {
-                    "project_name": "bevyengine",
-                    "true_value": 202,
-                    "predicted_value": 190.19,
-                    "absolute_error": 11.81,
-                    "relative_error_percent": 5.85
-                },
-                {
-                    "project_name": "apache",
-                    "true_value": 19,
-                    "predicted_value": 18.71,
-                    "absolute_error": 0.29,
-                    "relative_error_percent": 1.54
-                },
-                {
-                    "project_name": "void-linux",
-                    "true_value": 119,
-                    "predicted_value": 79.74,
-                    "absolute_error": 39.26,
-                    "relative_error_percent": 32.99
-                },
-                {
-                    "project_name": "home-assistant",
-                    "true_value": 1,
-                    "predicted_value": 14.18,
-                    "absolute_error": 13.18,
-                    "relative_error_percent": 1317.64
-                },
-                {
-                    "project_name": "gravitational",
-                    "true_value": 12,
-                    "predicted_value": 81.09,
-                    "absolute_error": 69.09,
-                    "relative_error_percent": 575.75
-                },
-                {
-                    "project_name": "Homebrew",
-                    "true_value": 175,
-                    "predicted_value": 158.52,
-                    "absolute_error": 16.48,
-                    "relative_error_percent": 9.42
-                },
-                {
-                    "project_name": "espressif",
-                    "true_value": 3,
-                    "predicted_value": 8.47,
-                    "absolute_error": 5.47,
-                    "relative_error_percent": 182.32
-                },
-                {
-                    "project_name": "argoproj",
-                    "true_value": 2,
-                    "predicted_value": 9.04,
-                    "absolute_error": 7.04,
-                    "relative_error_percent": 352.03
-                },
-                {
-                    "project_name": "dotnet",
-                    "true_value": 131,
-                    "predicted_value": 118.48,
-                    "absolute_error": 12.52,
-                    "relative_error_percent": 9.56
-                },
-                {
-                    "project_name": "elastic",
-                    "true_value": 74,
-                    "predicted_value": 83.62,
-                    "absolute_error": 9.62,
-                    "relative_error_percent": 13
-                },
-                {
-                    "project_name": "apache",
-                    "true_value": 143,
-                    "predicted_value": 94.36,
-                    "absolute_error": 48.64,
-                    "relative_error_percent": 34.02
-                },
-                {
-                    "project_name": "DataDog",
-                    "true_value": 1,
-                    "predicted_value": 8.54,
-                    "absolute_error": 7.54,
-                    "relative_error_percent": 754.02
-                },
-                {
-                    "project_name": "Azure",
-                    "true_value": 21,
-                    "predicted_value": 12.93,
-                    "absolute_error": 8.07,
-                    "relative_error_percent": 38.45
-                }
-            ]
+    "metadata": {
+        "target_column": "technical_fork",
+        "model_used": "Ridge回归",
+        "feature_columns": [
+            "feat_bus_factor",
+            "feat_change_requests",
+            "feat_change_requests_accepted",
+            "feat_change_requests_reviews",
+            "feat_code_change_lines_add",
+            "feat_code_change_lines_remove",
+            "feat_inactive_contributors",
+            "feat_issues_closed",
+            "feat_issues_new",
+            "feat_issue_comments",
+            "feat_new_contributors"
+        ],
+        "total_samples": 300,
+        "valid_samples": 300,
+        "train_samples": 210,
+        "test_samples": 90,
+        "performance_metrics": {
+            "R2_train": 0.7739943772069441,
+            "R2_test": 0.8525669132575904,
+            "RMSE_test": 442.63050977656815,
+            "MAE_test": 143.0667751102907,
+            "overfitting_gap": -0.07857253605064629
         },
-        "feature_importance": {
-            "feature_importance": [
-                {
-                    "feature_name": "feat_attention",
-                    "importance": 0.5488697265008179
-                },
-                {
-                    "feature_name": "feat_stars",
-                    "importance": 0.13193223882515273
-                },
-                {
-                    "feature_name": "feat_openrank",
-                    "importance": 0.05819756734777438
-                },
-                {
-                    "feature_name": "feat_change_requests",
-                    "importance": 0.05412199679816267
-                },
-                {
-                    "feature_name": "feat_bus_factor",
-                    "importance": 0.04029513871911449
-                },
-                {
-                    "feature_name": "feat_activity",
-                    "importance": 0.0340643801907572
-                },
-                {
-                    "feature_name": "feat_new_contributors",
-                    "importance": 0.023164696416601446
-                },
-                {
-                    "feature_name": "feat_participants",
-                    "importance": 0.022726012673040644
-                },
-                {
-                    "feature_name": "feat_change_requests_accepted",
-                    "importance": 0.020593569608592432
-                },
-                {
-                    "feature_name": "feat_issues_and_change_request_active",
-                    "importance": 0.020467393903413993
-                },
-                {
-                    "feature_name": "feat_meta",
-                    "importance": 0.00978887867480009
-                },
-                {
-                    "feature_name": "feat_code_change_lines_remove",
-                    "importance": 0.006749610979252937
-                },
-                {
-                    "feature_name": "feat_issues_closed",
-                    "importance": 0.005887205443440085
-                },
-                {
-                    "feature_name": "feat_issues_new",
-                    "importance": 0.005159856530135094
-                },
-                {
-                    "feature_name": "feat_code_change_lines_add",
-                    "importance": 0.004958442286770293
-                },
-                {
-                    "feature_name": "feat_inactive_contributors",
-                    "importance": 0.004753432515736079
-                },
-                {
-                    "feature_name": "feat_code_change_lines_sum",
-                    "importance": 0.0038282697535064235
-                },
-                {
-                    "feature_name": "feat_issue_comments",
-                    "importance": 0.0036426598208361962
-                },
-                {
-                    "feature_name": "feat_change_requests_reviews",
-                    "importance": 0.0007989230120949043
-                }
-            ]
+        "model_selection_note": "选择标准：测试集R²最高，同时惩罚过拟合严重的模型"
+    },
+    "model_comparison": {
+        "Ridge回归": {
+            "R2_train": 0.7739943772069441,
+            "R2_test": 0.8525669132575904,
+            "overfitting_gap": -0.07857253605064629,
+            "selected": true
+        },
+        "Lasso回归": {
+            "R2_train": 0.7594887920465836,
+            "R2_test": 0.8468380900432333,
+            "overfitting_gap": -0.0873492979966497,
+            "selected": false
+        },
+        "梯度提升": {
+            "R2_train": 0.9875489584699044,
+            "R2_test": 0.5840936596272944,
+            "overfitting_gap": 0.40345529884261,
+            "selected": false
+        },
+        "支持向量机": {
+            "R2_train": 0.7548430883794832,
+            "R2_test": 0.28318922773668953,
+            "overfitting_gap": 0.4716538606427937,
+            "selected": false
         }
-    }
+    },
+    "predictions": [
+        {
+            "project_name": "microsoft",
+            "true_value": 595,
+            "predicted_value": 214,
+            "absolute_error": 381.1981,
+            "relative_error_percent": 64.07
+        },
+        {
+            "project_name": "storybookjs",
+            "true_value": 4,
+            "predicted_value": 49,
+            "absolute_error": 44.8004,
+            "relative_error_percent": 1120.01
+        },
+        {
+            "project_name": "grafana",
+            "true_value": 49,
+            "predicted_value": 159,
+            "absolute_error": 110.2332,
+            "relative_error_percent": 224.97
+        },
+        {
+            "project_name": "Azure",
+            "true_value": 1,
+            "predicted_value": 49,
+            "absolute_error": 47.6338,
+            "relative_error_percent": 4763.38
+        },
+        {
+            "project_name": "pandas-dev",
+            "true_value": 74,
+            "predicted_value": 141,
+            "absolute_error": 66.7855,
+            "relative_error_percent": 90.25
+        },
+        {
+            "project_name": "openjournals",
+            "true_value": 1,
+            "predicted_value": 57,
+            "absolute_error": 56.3801,
+            "relative_error_percent": 5638.01
+        },
+        {
+            "project_name": "microsoft",
+            "true_value": 10,
+            "predicted_value": 61,
+            "absolute_error": 51.464,
+            "relative_error_percent": 514.64
+        },
+        {
+            "project_name": "dotnet",
+            "true_value": 1,
+            "predicted_value": 47,
+            "absolute_error": 45.8987,
+            "relative_error_percent": 4589.87
+        },
+        {
+            "project_name": "Azure",
+            "true_value": 8,
+            "predicted_value": 52,
+            "absolute_error": 43.854,
+            "relative_error_percent": 548.17
+        },
+        {
+            "project_name": "kubernetes",
+            "true_value": 1,
+            "predicted_value": 73,
+            "absolute_error": 72.0572,
+            "relative_error_percent": 7205.72
+        },
+        {
+            "project_name": "ppy",
+            "true_value": 1,
+            "predicted_value": 47,
+            "absolute_error": 45.5095,
+            "relative_error_percent": 4550.95
+        },
+        {
+            "project_name": "angular",
+            "true_value": 89,
+            "predicted_value": 75,
+            "absolute_error": 14.2563,
+            "relative_error_percent": 16.02
+        },
+        {
+            "project_name": "o3de",
+            "true_value": 825,
+            "predicted_value": 89,
+            "absolute_error": 735.7052,
+            "relative_error_percent": 89.18
+        },
+        {
+            "project_name": "RocketChat",
+            "true_value": 66,
+            "predicted_value": 66,
+            "absolute_error": 0.2683,
+            "relative_error_percent": 0.41
+        },
+        {
+            "project_name": "macports",
+            "true_value": 18,
+            "predicted_value": 53,
+            "absolute_error": 35.3083,
+            "relative_error_percent": 196.16
+        },
+        {
+            "project_name": "open-mmlab",
+            "true_value": 43,
+            "predicted_value": 59,
+            "absolute_error": 15.5428,
+            "relative_error_percent": 36.15
+        },
+        {
+            "project_name": "webcompat",
+            "true_value": 4,
+            "predicted_value": 111,
+            "absolute_error": 107.1596,
+            "relative_error_percent": 2678.99
+        },
+        {
+            "project_name": "newrelic",
+            "true_value": 1,
+            "predicted_value": 59,
+            "absolute_error": 57.5498,
+            "relative_error_percent": 5754.98
+        },
+        {
+            "project_name": "golang",
+            "true_value": 119,
+            "predicted_value": 250,
+            "absolute_error": 130.6312,
+            "relative_error_percent": 109.77
+        },
+        {
+            "project_name": "idsb3t1",
+            "true_value": 2,
+            "predicted_value": 54,
+            "absolute_error": 51.9717,
+            "relative_error_percent": 2598.59
+        },
+        {
+            "project_name": "archway-network",
+            "true_value": 10355,
+            "predicted_value": 8310,
+            "absolute_error": 2044.9581,
+            "relative_error_percent": 19.75
+        },
+        {
+            "project_name": "dotnet",
+            "true_value": 111,
+            "predicted_value": 186,
+            "absolute_error": 75.374,
+            "relative_error_percent": 67.9
+        },
+        {
+            "project_name": "rapid7",
+            "true_value": 119,
+            "predicted_value": 97,
+            "absolute_error": 22.162,
+            "relative_error_percent": 18.62
+        },
+        {
+            "project_name": "ray-project",
+            "true_value": 1,
+            "predicted_value": 61,
+            "absolute_error": 59.7994,
+            "relative_error_percent": 5979.94
+        },
+        {
+            "project_name": "denoland",
+            "true_value": 147,
+            "predicted_value": 167,
+            "absolute_error": 20.3631,
+            "relative_error_percent": 13.85
+        },
+        {
+            "project_name": "PrestaShop",
+            "true_value": 61,
+            "predicted_value": 73,
+            "absolute_error": 12.2078,
+            "relative_error_percent": 20.01
+        },
+        {
+            "project_name": "type-challenges",
+            "true_value": 56,
+            "predicted_value": 72,
+            "absolute_error": 16.3419,
+            "relative_error_percent": 29.18
+        },
+        {
+            "project_name": "yuzu-emu",
+            "true_value": 205,
+            "predicted_value": 91,
+            "absolute_error": 113.9708,
+            "relative_error_percent": 55.6
+        },
+        {
+            "project_name": "hashicorp",
+            "true_value": 11,
+            "predicted_value": 68,
+            "absolute_error": 56.6734,
+            "relative_error_percent": 515.21
+        },
+        {
+            "project_name": "prisma",
+            "true_value": 31,
+            "predicted_value": 70,
+            "absolute_error": 38.8149,
+            "relative_error_percent": 125.21
+        },
+        {
+            "project_name": "Expensify",
+            "true_value": 47,
+            "predicted_value": 79,
+            "absolute_error": 31.5799,
+            "relative_error_percent": 67.19
+        },
+        {
+            "project_name": "huggingface",
+            "true_value": 243,
+            "predicted_value": 114,
+            "absolute_error": 129.2958,
+            "relative_error_percent": 53.21
+        },
+        {
+            "project_name": "MicrosoftDocs",
+            "true_value": 191,
+            "predicted_value": 121,
+            "absolute_error": 69.6883,
+            "relative_error_percent": 36.49
+        },
+        {
+            "project_name": "JuliaLang",
+            "true_value": 76,
+            "predicted_value": 144,
+            "absolute_error": 68.2587,
+            "relative_error_percent": 89.81
+        },
+        {
+            "project_name": "nrfconnect",
+            "true_value": 22,
+            "predicted_value": 62,
+            "absolute_error": 39.5415,
+            "relative_error_percent": 179.73
+        },
+        {
+            "project_name": "electron",
+            "true_value": 59,
+            "predicted_value": 97,
+            "absolute_error": 37.9985,
+            "relative_error_percent": 64.4
+        },
+        {
+            "project_name": "Azure",
+            "true_value": 14,
+            "predicted_value": 51,
+            "absolute_error": 37.2716,
+            "relative_error_percent": 266.23
+        },
+        {
+            "project_name": "ccxt",
+            "true_value": 2,
+            "predicted_value": 76,
+            "absolute_error": 73.772,
+            "relative_error_percent": 3688.6
+        },
+        {
+            "project_name": "SerenityOS",
+            "true_value": 6,
+            "predicted_value": 48,
+            "absolute_error": 42.2945,
+            "relative_error_percent": 704.91
+        },
+        {
+            "project_name": "apache",
+            "true_value": 261,
+            "predicted_value": -4,
+            "absolute_error": 265.3355,
+            "relative_error_percent": 101.66
+        },
+        {
+            "project_name": "cloudflare",
+            "true_value": 2,
+            "predicted_value": 94,
+            "absolute_error": 92.1158,
+            "relative_error_percent": 4605.79
+        },
+        {
+            "project_name": "apple",
+            "true_value": 3250,
+            "predicted_value": 471,
+            "absolute_error": 2779.3161,
+            "relative_error_percent": 85.52
+        },
+        {
+            "project_name": "vercel",
+            "true_value": 154,
+            "predicted_value": 168,
+            "absolute_error": 13.9498,
+            "relative_error_percent": 9.06
+        },
+        {
+            "project_name": "ansible",
+            "true_value": 122,
+            "predicted_value": 263,
+            "absolute_error": 140.8874,
+            "relative_error_percent": 115.48
+        },
+        {
+            "project_name": "appsmithorg",
+            "true_value": 2,
+            "predicted_value": 80,
+            "absolute_error": 78.1969,
+            "relative_error_percent": 3909.85
+        },
+        {
+            "project_name": "apache",
+            "true_value": 55,
+            "predicted_value": 85,
+            "absolute_error": 29.7063,
+            "relative_error_percent": 54.01
+        },
+        {
+            "project_name": "php",
+            "true_value": 103,
+            "predicted_value": 64,
+            "absolute_error": 38.7679,
+            "relative_error_percent": 37.64
+        },
+        {
+            "project_name": "openssl",
+            "true_value": 50,
+            "predicted_value": 61,
+            "absolute_error": 11.0818,
+            "relative_error_percent": 22.16
+        },
+        {
+            "project_name": "dotnet",
+            "true_value": 2,
+            "predicted_value": 49,
+            "absolute_error": 46.6343,
+            "relative_error_percent": 2331.72
+        },
+        {
+            "project_name": "openwrt",
+            "true_value": 20,
+            "predicted_value": 48,
+            "absolute_error": 27.8884,
+            "relative_error_percent": 139.44
+        },
+        {
+            "project_name": "llvm",
+            "true_value": 48,
+            "predicted_value": 48,
+            "absolute_error": 0.3415,
+            "relative_error_percent": 0.71
+        },
+        {
+            "project_name": "github",
+            "true_value": 2350,
+            "predicted_value": 203,
+            "absolute_error": 2146.7449,
+            "relative_error_percent": 91.35
+        },
+        {
+            "project_name": "project-chip",
+            "true_value": 65,
+            "predicted_value": 114,
+            "absolute_error": 48.5821,
+            "relative_error_percent": 74.74
+        },
+        {
+            "project_name": "apache",
+            "true_value": 89,
+            "predicted_value": 67,
+            "absolute_error": 21.6602,
+            "relative_error_percent": 24.34
+        },
+        {
+            "project_name": "zero-to-mastery",
+            "true_value": 49,
+            "predicted_value": 89,
+            "absolute_error": 40.2999,
+            "relative_error_percent": 82.24
+        },
+        {
+            "project_name": "tgstation",
+            "true_value": 58,
+            "predicted_value": 79,
+            "absolute_error": 20.5531,
+            "relative_error_percent": 35.44
+        },
+        {
+            "project_name": "conda-forge",
+            "true_value": 2,
+            "predicted_value": 55,
+            "absolute_error": 53.0673,
+            "relative_error_percent": 2653.36
+        },
+        {
+            "project_name": "cilium",
+            "true_value": 2,
+            "predicted_value": 50,
+            "absolute_error": 48.4154,
+            "relative_error_percent": 2420.77
+        },
+        {
+            "project_name": "microsoft",
+            "true_value": 115,
+            "predicted_value": 162,
+            "absolute_error": 46.6479,
+            "relative_error_percent": 40.56
+        },
+        {
+            "project_name": "JuliaRegistries",
+            "true_value": 2,
+            "predicted_value": 46,
+            "absolute_error": 44.3148,
+            "relative_error_percent": 2215.74
+        },
+        {
+            "project_name": "oppia",
+            "true_value": 24,
+            "predicted_value": 73,
+            "absolute_error": 49.4981,
+            "relative_error_percent": 206.24
+        },
+        {
+            "project_name": "ankidroid",
+            "true_value": 6,
+            "predicted_value": 62,
+            "absolute_error": 56.134,
+            "relative_error_percent": 935.57
+        },
+        {
+            "project_name": "Azure",
+            "true_value": 25,
+            "predicted_value": 45,
+            "absolute_error": 19.8721,
+            "relative_error_percent": 79.49
+        },
+        {
+            "project_name": "matplotlib",
+            "true_value": 61,
+            "predicted_value": 95,
+            "absolute_error": 33.7834,
+            "relative_error_percent": 55.38
+        },
+        {
+            "project_name": "kubernetes",
+            "true_value": 5,
+            "predicted_value": 40,
+            "absolute_error": 34.9178,
+            "relative_error_percent": 698.36
+        },
+        {
+            "project_name": "MarlinFirmware",
+            "true_value": 120,
+            "predicted_value": 105,
+            "absolute_error": 15.0564,
+            "relative_error_percent": 12.55
+        },
+        {
+            "project_name": "JacksonKearl",
+            "true_value": 1,
+            "predicted_value": 184,
+            "absolute_error": 183.4947,
+            "relative_error_percent": 18349.47
+        },
+        {
+            "project_name": "ruffle-rs",
+            "true_value": 17,
+            "predicted_value": 47,
+            "absolute_error": 30.3075,
+            "relative_error_percent": 178.28
+        },
+        {
+            "project_name": "alibaba",
+            "true_value": 127,
+            "predicted_value": 63,
+            "absolute_error": 63.5308,
+            "relative_error_percent": 50.02
+        },
+        {
+            "project_name": "matrix-org",
+            "true_value": 1,
+            "predicted_value": 51,
+            "absolute_error": 49.7899,
+            "relative_error_percent": 4978.99
+        },
+        {
+            "project_name": "docker",
+            "true_value": 10,
+            "predicted_value": 57,
+            "absolute_error": 46.5427,
+            "relative_error_percent": 465.43
+        },
+        {
+            "project_name": "expo",
+            "true_value": 7,
+            "predicted_value": 48,
+            "absolute_error": 40.864,
+            "relative_error_percent": 583.77
+        },
+        {
+            "project_name": "openvinotoolkit",
+            "true_value": 29,
+            "predicted_value": 55,
+            "absolute_error": 25.6105,
+            "relative_error_percent": 88.31
+        },
+        {
+            "project_name": "microsoft",
+            "true_value": 53,
+            "predicted_value": 115,
+            "absolute_error": 62.0458,
+            "relative_error_percent": 117.07
+        },
+        {
+            "project_name": "filecoin-project",
+            "true_value": 4,
+            "predicted_value": 55,
+            "absolute_error": 50.5391,
+            "relative_error_percent": 1263.48
+        },
+        {
+            "project_name": "uBlockOrigin",
+            "true_value": 6,
+            "predicted_value": 63,
+            "absolute_error": 56.5522,
+            "relative_error_percent": 942.54
+        },
+        {
+            "project_name": "azerothcore",
+            "true_value": 1,
+            "predicted_value": 36,
+            "absolute_error": 34.5834,
+            "relative_error_percent": 3458.34
+        },
+        {
+            "project_name": "bevyengine",
+            "true_value": 202,
+            "predicted_value": 131,
+            "absolute_error": 70.9609,
+            "relative_error_percent": 35.13
+        },
+        {
+            "project_name": "apache",
+            "true_value": 19,
+            "predicted_value": 117,
+            "absolute_error": 97.87,
+            "relative_error_percent": 515.11
+        },
+        {
+            "project_name": "void-linux",
+            "true_value": 119,
+            "predicted_value": 121,
+            "absolute_error": 2.151,
+            "relative_error_percent": 1.81
+        },
+        {
+            "project_name": "home-assistant",
+            "true_value": 1,
+            "predicted_value": 48,
+            "absolute_error": 46.9993,
+            "relative_error_percent": 4699.93
+        },
+        {
+            "project_name": "gravitational",
+            "true_value": 12,
+            "predicted_value": 52,
+            "absolute_error": 39.5007,
+            "relative_error_percent": 329.17
+        },
+        {
+            "project_name": "Homebrew",
+            "true_value": 175,
+            "predicted_value": 372,
+            "absolute_error": 196.7564,
+            "relative_error_percent": 112.43
+        },
+        {
+            "project_name": "espressif",
+            "true_value": 3,
+            "predicted_value": 53,
+            "absolute_error": 50.3138,
+            "relative_error_percent": 1677.13
+        },
+        {
+            "project_name": "argoproj",
+            "true_value": 2,
+            "predicted_value": 53,
+            "absolute_error": 51.0878,
+            "relative_error_percent": 2554.39
+        },
+        {
+            "project_name": "dotnet",
+            "true_value": 131,
+            "predicted_value": 109,
+            "absolute_error": 21.7893,
+            "relative_error_percent": 16.63
+        },
+        {
+            "project_name": "elastic",
+            "true_value": 74,
+            "predicted_value": 230,
+            "absolute_error": 155.7111,
+            "relative_error_percent": 210.42
+        },
+        {
+            "project_name": "apache",
+            "true_value": 143,
+            "predicted_value": 50,
+            "absolute_error": 92.6558,
+            "relative_error_percent": 64.79
+        },
+        {
+            "project_name": "DataDog",
+            "true_value": 1,
+            "predicted_value": 51,
+            "absolute_error": 49.9466,
+            "relative_error_percent": 4994.66
+        },
+        {
+            "project_name": "Azure",
+            "true_value": 21,
+            "predicted_value": 69,
+            "absolute_error": 48.0635,
+            "relative_error_percent": 228.87
+        }
+    ],
+    "feature_importance": [
+        {
+            "feature_name": "feat_bus_factor",
+            "importance": 0.5189124625952527,
+            "abs_importance": 0.5189124625952527
+        },
+        {
+            "feature_name": "feat_new_contributors",
+            "importance": 0.17478786829181991,
+            "abs_importance": 0.17478786829181991
+        },
+        {
+            "feature_name": "feat_change_requests_accepted",
+            "importance": 0.12574577643520887,
+            "abs_importance": 0.12574577643520887
+        },
+        {
+            "feature_name": "feat_inactive_contributors",
+            "importance": 0.09017918820653086,
+            "abs_importance": 0.09017918820653086
+        },
+        {
+            "feature_name": "feat_issues_closed",
+            "importance": 0.08935286479330304,
+            "abs_importance": 0.08935286479330304
+        },
+        {
+            "feature_name": "feat_issues_new",
+            "importance": -0.0507400861256975,
+            "abs_importance": 0.0507400861256975
+        },
+        {
+            "feature_name": "feat_code_change_lines_remove",
+            "importance": -0.03318954331920763,
+            "abs_importance": 0.03318954331920763
+        },
+        {
+            "feature_name": "feat_issue_comments",
+            "importance": -0.02208434891000434,
+            "abs_importance": 0.02208434891000434
+        },
+        {
+            "feature_name": "feat_code_change_lines_add",
+            "importance": 0.020387091717010548,
+            "abs_importance": 0.020387091717010548
+        },
+        {
+            "feature_name": "feat_change_requests",
+            "importance": -0.019371145599129936,
+            "abs_importance": 0.019371145599129936
+        },
+        {
+            "feature_name": "feat_change_requests_reviews",
+            "importance": 0.0012527454257104406,
+            "abs_importance": 0.0012527454257104406
+        }
+    ]
 }

@@ -7,10 +7,6 @@
 
     <!-- 任务控制区 -->
     <div class="control-panel">
-      <div class="mode-notice">
-        💡 提示：后端不可用时，将自动加载本地默认数据进行展示
-      </div>
-
       <button
         @click="startPrediction"
         :disabled="taskStatus === 'running'"
@@ -45,8 +41,8 @@
         <div class="metric-card">
           <div class="metric-icon">🎯</div>
           <div class="metric-content">
-            <div class="metric-value">{{ result.model_evaluation.XGBoost.r2_test }}</div>
-            <div class="metric-label">R² 测试集</div>
+            <div class="metric-value">{{ result.model_evaluation.XGBoost.r2_train }}</div>
+            <div class="metric-label">R² 训练集</div>
           </div>
         </div>
         <div class="metric-card">
@@ -180,8 +176,7 @@ const startPrediction = async () => {
     }
   } catch (err: any) {
     // 后端不可用，读取本地默认数据
-    console.warn('后端不可用，读取本地默认数据:', err.message)
-    await loadDefaultData()
+    console.warn('请求错误')
   }
 }
 
@@ -220,23 +215,6 @@ const stopPolling = () => {
   }
 }
 
-// 加载本地默认数据
-const loadDefaultData = async () => {
-  try {
-    // 尝试从本地文件加载
-    const response = await axios.get('/backendData/response_time_prediction_result.json')
-    result.value = response.data
-    taskStatus.value = 'completed'
-
-    await nextTick()
-    renderCharts()
-  } catch (err: any) {
-    // 本地文件也不存在，显示错误
-    console.error('无法加载本地数据:', err)
-    errorMessage.value = '⚠️ 后端服务不可用，且本地数据文件不存在。请确保 backendData/response_time_prediction_result.json 文件存在。'
-    taskStatus.value = 'error'
-  }
-}
 
 // 加载预测结果
 const loadResult = async () => {
@@ -253,8 +231,7 @@ const loadResult = async () => {
     }
   } catch (err: any) {
     // 后端不可用，尝试加载本地默认数据
-    console.warn('无法从后端加载结果，尝试读取本地默认数据:', err.message)
-    await loadDefaultData()
+    console.warn('加载结果失败')
   }
 }
 

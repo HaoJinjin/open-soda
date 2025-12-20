@@ -2,7 +2,7 @@
   <div class="fork-prediction" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
       <h1 class="page-title">🔱 Fork 数量预测</h1>
-      <p class="page-subtitle">Fork Prediction - 基于随机森林模型的 Fork 数量预测</p>
+      <p class="page-subtitle">Fork Prediction - 多模型对比预测（{{ metadata.model_used || '加载中...' }}）</p>
     </header>
 
     <!-- 加载状态 -->
