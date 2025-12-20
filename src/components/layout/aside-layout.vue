@@ -11,7 +11,7 @@
         <li
           v-for="m in menus"
           :key="m.key"
-          :class="{active: current===m.key}"
+          :class="{ active: isActive(m) }"
           @click="selectMenu(m)"
           class="menu-item"
         >
@@ -21,74 +21,49 @@
 
       <div class="menu-footer">
         <LanguageSwitcher />
-        <div class="tech-badge">{{ $t('layout.openDigger') }}</div>
+        <div class="tech-badge">{{ $t("layout.openDigger") }}</div>
       </div>
     </aside>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import { useRouter } from "vue-router"
-import LanguageSwitcher from "@/components/LanguageSwitcher.vue"
+import { ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
 
-const router = useRouter()
+const router = useRouter();
+const route = useRoute();
 
 interface Menu {
-  key: string
+  key: string;
+  routeName?: string;
 }
 
-const current = ref("overview")
-
 const menus: Menu[] = [
-  { key: "overview" },
-  { key: "activity" },
-  { key: "impact" },
-  { key: "contributor" },
-  { key: "issue" },
-  { key: "code" },
-  { key: "community" },
-  { key: "forkPrediction" },
-  { key: "indicatorStatistics" },
-  { key: "responseTimePrediction" }
-]
+  { key: "overview", routeName: "showBoard" },
+  { key: "forkPrediction", routeName: "forkPrediction" },
+  { key: "indicatorStatistics", routeName: "indicatorStatistics" },
+  { key: "responseTimePrediction", routeName: "responseTimePrediction" },
+  { key: "activity", routeName: "activity" },
+  { key: "impact", routeName: "impact" },
+  { key: "contributor", routeName: "contributor" },
+  { key: "issue", routeName: "issue" },
+  { key: "code", routeName: "code" },
+  { key: "community", routeName: "community" },
+];
+
+// 根据当前路由确定激活的菜单项
+const isActive = (menu: Menu) => {
+  return route.name === menu.routeName;
+};
 
 function selectMenu(m: Menu) {
-  current.value = m.key
   // 根据菜单项导航到相应的路由
-  switch(m.key) {
-    case "overview":
-      router.push({ name: "showBoard" })
-      break
-    case "activity":
-      router.push({ name: "activity" })
-      break
-    case "impact":
-      router.push({ name: "impact" })
-      break
-    case "contributor":
-      router.push({ name: "contributor" })
-      break
-    case "issue":
-      router.push({ name: "issue" })
-      break
-    case "code":
-      router.push({ name: "code" })
-      break
-    case "community":
-      router.push({ name: "community" })
-      break
-    case "forkPrediction":
-      router.push({ name: "forkPrediction" })
-      break
-    case "indicatorStatistics":
-      router.push({ name: "indicatorStatistics" })
-      break
-    case "responseTimePrediction":
-      router.push({ name: "responseTimePrediction" })
-      break
-    default:
-      router.push({ name: "showBoard" })
+  if (m.routeName) {
+    router.push({ name: m.routeName });
+  } else {
+    router.push({ name: "showBoard" });
   }
 }
 </script>
@@ -104,34 +79,40 @@ function selectMenu(m: Menu) {
   width: 200px;
   /* height: 100%; */
   background: #000000;
-  background-image:
-    linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%),
-    radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.05) 0%, transparent 50%);
+  background-image: linear-gradient(
+      180deg,
+      #000000 0%,
+      #0a0a0a 50%,
+      #000000 100%
+    ),
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(0, 242, 254, 0.05) 0%,
+      transparent 50%
+    );
   border-right: 1px solid rgba(0, 242, 254, 0.4);
   padding: 20px 0;
   display: flex;
   flex-direction: column;
-  box-shadow:
-    2px 0 20px rgba(0, 0, 0, 0.8),
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.8),
     inset -1px 0 0 rgba(0, 242, 254, 0.1);
   position: relative;
 }
 
 .menu::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 242, 254, 0.02) 2px,
-      rgba(0, 242, 254, 0.02) 4px
-    );
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 242, 254, 0.02) 2px,
+    rgba(0, 242, 254, 0.02) 4px
+  );
   pointer-events: none;
   opacity: 0.5;
 }
@@ -148,23 +129,19 @@ function selectMenu(m: Menu) {
   color: #00f2fe;
   margin-bottom: 12px;
   text-align: center;
-  text-shadow:
-    0 0 15px rgba(0, 242, 254, 0.8),
-    0 0 30px rgba(0, 242, 254, 0.4);
+  text-shadow: 0 0 15px rgba(0, 242, 254, 0.8), 0 0 30px rgba(0, 242, 254, 0.4);
   letter-spacing: 2px;
   animation: logoGlow 3s ease-in-out infinite;
 }
 
 @keyframes logoGlow {
-  0%, 100% {
-    text-shadow:
-      0 0 15px rgba(0, 242, 254, 0.8),
+  0%,
+  100% {
+    text-shadow: 0 0 15px rgba(0, 242, 254, 0.8),
       0 0 30px rgba(0, 242, 254, 0.4);
   }
   50% {
-    text-shadow:
-      0 0 20px rgba(0, 242, 254, 1),
-      0 0 40px rgba(0, 242, 254, 0.6),
+    text-shadow: 0 0 20px rgba(0, 242, 254, 1), 0 0 40px rgba(0, 242, 254, 0.6),
       0 0 60px rgba(0, 242, 254, 0.3);
   }
 }
@@ -198,8 +175,7 @@ function selectMenu(m: Menu) {
 .menu-item:hover {
   background: rgba(0, 242, 254, 0.15);
   color: #00f2fe;
-  box-shadow:
-    inset 0 0 20px rgba(0, 242, 254, 0.1),
+  box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.1),
     0 0 15px rgba(0, 242, 254, 0.2);
 }
 
@@ -207,10 +183,8 @@ function selectMenu(m: Menu) {
   background: rgba(0, 242, 254, 0.2);
   color: #00f2fe;
   border-left: 3px solid #00f2fe;
-  box-shadow:
-    inset 0 0 25px rgba(0, 242, 254, 0.15),
-    0 0 20px rgba(0, 242, 254, 0.3),
-    inset -1px 0 0 rgba(0, 242, 254, 0.2);
+  box-shadow: inset 0 0 25px rgba(0, 242, 254, 0.15),
+    0 0 20px rgba(0, 242, 254, 0.3), inset -1px 0 0 rgba(0, 242, 254, 0.2);
 }
 
 .menu-item.active .menu-title {
@@ -224,7 +198,12 @@ function selectMenu(m: Menu) {
   left: 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 242, 254, 0.3),
+    transparent
+  );
   opacity: 0.5;
 }
 
@@ -281,8 +260,7 @@ function selectMenu(m: Menu) {
   font-weight: 600;
   letter-spacing: 1.5px;
   border: 1px solid rgba(0, 242, 254, 0.4);
-  box-shadow:
-    0 0 15px rgba(0, 242, 254, 0.3),
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3),
     inset 0 1px 0 rgba(0, 242, 254, 0.2);
   text-transform: uppercase;
   animation: badgePulse 2s ease-in-out infinite;
@@ -290,14 +268,13 @@ function selectMenu(m: Menu) {
 }
 
 @keyframes badgePulse {
-  0%, 100% {
-    box-shadow:
-      0 0 15px rgba(0, 242, 254, 0.3),
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3),
       inset 0 1px 0 rgba(0, 242, 254, 0.2);
   }
   50% {
-    box-shadow:
-      0 0 25px rgba(0, 242, 254, 0.5),
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.5),
       inset 0 1px 0 rgba(0, 242, 254, 0.3);
   }
 }

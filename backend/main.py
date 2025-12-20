@@ -10,7 +10,7 @@ from pydantic import BaseModel
 import uvicorn
 
 # 导入封装的预测函数
-from fork_prediction import predict_fork_count
+from fork_prediction import run_fork_prediction
 from indicators_stat import get_indicator_statistics
 from predict_response_time_xgboost import predict_response_time
 
@@ -131,19 +131,24 @@ async def health_check():
 async def api_predict_fork():
     """
     预测 Fork 数量（使用 technical_fork 列）
-
     返回:
         {
             "success": true,
             "data": {
+                {
                 "metadata": {...},
-                "predictions": {...},
-                "feature_importance": {...}
+                "model_comparison": {...},
+                "feature_importance": {...},
+                "predictions": [...],
+                "summary": {...}
+                }
             }
         }
     """
     try:
-        result = predict_fork_count()
+        result = run_fork_prediction(
+        csv_path="backendData/top_300_metrics.csv"
+    )
         return {
             "success": True,
             "data": result
@@ -157,20 +162,6 @@ async def api_predict_fork():
 
 @app.get("/api/statistics/indicators")
 async def api_get_indicators_stats():
-    """
-    获取指标统计信息
-
-    返回:
-        {
-            "success": true,
-            "data": {
-                "metadata": {...},
-                "indicator_statistics": [...],
-                "correlation_matrix": {...},
-                "top10_projects": [...]
-            }
-        }
-    """
     try:
         result = get_indicator_statistics()
         return {

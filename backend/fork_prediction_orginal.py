@@ -19,7 +19,7 @@ np.random.seed(42)
 print("【1/8】加载CSV数据...")
 csv_path = r"C:\Users\22390\Desktop\OpenSODA\backendData\top_300_metrics.csv"
 
-def load_csv_data(file_path):
+def load_csv_data(file_path,):
     """加载CSV文件"""
     try:
         df = pd.read_csv(file_path, encoding='utf-8')

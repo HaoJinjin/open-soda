@@ -1,21 +1,27 @@
 <template>
   <div class="fork-prediction" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
-      <h1 class="page-title">🔱 {{ $t('menu.forkPrediction') }}</h1>
-      <p class="page-subtitle">{{ $t('pages.forkPrediction.subtitle') }}（{{ metadata.model_used || $t('common.loading') }}）</p>
+      <h1 class="page-title">🔱 {{ $t("menu.forkPrediction") }}</h1>
+      <p class="page-subtitle">
+        {{ $t("pages.forkPrediction.subtitle") }}（{{
+          metadata.model_used || $t("common.loading")
+        }}）
+      </p>
     </header>
 
     <!-- 加载状态 -->
     <div v-if="loading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p class="loading-text">{{ $t('common.loadingData') }}...</p>
+      <p class="loading-text">{{ $t("common.loadingData") }}...</p>
     </div>
 
     <!-- 错误提示 -->
     <div v-else-if="error" class="error-container">
       <div class="error-icon">⚠️</div>
       <p class="error-text">{{ error }}</p>
-      <button @click="loadPrediction" class="retry-btn">{{ $t('common.retry') }}</button>
+      <button @click="loadPrediction" class="retry-btn">
+        {{ $t("common.retry") }}
+      </button>
     </div>
 
     <!-- 主内容 -->
@@ -26,13 +32,17 @@
           <div class="metric-icon">🎯</div>
           <div class="metric-content">
             <div class="metric-value">{{ formatNumber(metrics.R2_test) }}</div>
-            <div class="metric-label">R² {{ $t('pages.forkPrediction.score') }}</div>
+            <div class="metric-label">
+              R² {{ $t("pages.forkPrediction.score") }}
+            </div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">📊</div>
           <div class="metric-content">
-            <div class="metric-value">{{ formatNumber(metrics.RMSE_test) }}</div>
+            <div class="metric-value">
+              {{ formatNumber(metrics.RMSE_test) }}
+            </div>
             <div class="metric-label">RMSE</div>
           </div>
         </div>
@@ -47,7 +57,9 @@
           <div class="metric-icon">🔢</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.valid_samples }}</div>
-            <div class="metric-label">{{ $t('pages.forkPrediction.validSamples') }}</div>
+            <div class="metric-label">
+              {{ $t("pages.forkPrediction.validSamples") }}
+            </div>
           </div>
         </div>
       </div>
@@ -56,35 +68,43 @@
       <div class="charts-container">
         <!-- 特征重要性图 -->
         <div class="chart-box">
-          <h3 class="chart-title">🎯 {{ $t('pages.forkPrediction.featureImportance') }}</h3>
+          <h3 class="chart-title">
+            🎯 {{ $t("pages.forkPrediction.featureImportance") }}
+          </h3>
           <div ref="featureImportanceRef" class="chart"></div>
         </div>
 
         <!-- 预测结果散点图 -->
         <div class="chart-box">
-          <h3 class="chart-title">📊 {{ $t('pages.forkPrediction.predictedVsActual') }}</h3>
+          <h3 class="chart-title">
+            📊 {{ $t("pages.forkPrediction.predictedVsActual") }}
+          </h3>
           <div ref="predictionScatterRef" class="chart"></div>
         </div>
 
         <!-- 预测误差分布 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📉 {{ $t('pages.forkPrediction.errorDistribution') }}</h3>
+          <h3 class="chart-title">
+            📉 {{ $t("pages.forkPrediction.errorDistribution") }}
+          </h3>
           <div ref="errorDistributionRef" class="chart"></div>
         </div>
 
         <!-- 预测结果表格 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📋 {{ $t('pages.forkPrediction.predictionDetails') }}（Top 20）</h3>
+          <h3 class="chart-title">
+            📋 {{ $t("pages.forkPrediction.predictionDetails") }}（Top 20）
+          </h3>
           <div class="table-container">
             <table class="prediction-table">
               <thead>
                 <tr>
-                  <th>{{ $t('pages.forkPrediction.rank') }}</th>
-                  <th>{{ $t('pages.forkPrediction.projectName') }}</th>
-                  <th>{{ $t('pages.forkPrediction.actualValue') }}</th>
-                  <th>{{ $t('pages.forkPrediction.predictedValue') }}</th>
-                  <th>{{ $t('pages.forkPrediction.absoluteError') }}</th>
-                  <th>{{ $t('pages.forkPrediction.relativeError') }}</th>
+                  <th>{{ $t("pages.forkPrediction.rank") }}</th>
+                  <th>{{ $t("pages.forkPrediction.projectName") }}</th>
+                  <th>{{ $t("pages.forkPrediction.actualValue") }}</th>
+                  <th>{{ $t("pages.forkPrediction.predictedValue") }}</th>
+                  <th>{{ $t("pages.forkPrediction.absoluteError") }}</th>
+                  <th>{{ $t("pages.forkPrediction.relativeError") }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -108,232 +128,258 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import * as echarts from 'echarts'
-import axios from 'axios'
-import { useI18n } from 'vue-i18n'
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
+import * as echarts from "echarts";
+import axios from "axios";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 // 响应式数据
-const loading = ref(true)
-const error = ref('')
-const metadata = ref<any>({})
-const metrics = ref<any>({})
-const predictions = ref<any[]>([])
-const featureImportance = ref<any[]>([])
-const topPredictions = ref<any[]>([])
+const loading = ref(true);
+const error = ref("");
+const metadata = ref<any>({});
+const metrics = ref<any>({});
+const predictions = ref<any[]>([]);
+const featureImportance = ref<any[]>([]);
+const topPredictions = ref<any[]>([]);
 
 // 图表引用
-const featureImportanceRef = ref<HTMLElement>()
-const predictionScatterRef = ref<HTMLElement>()
-const errorDistributionRef = ref<HTMLElement>()
+const featureImportanceRef = ref<HTMLElement>();
+const predictionScatterRef = ref<HTMLElement>();
+const errorDistributionRef = ref<HTMLElement>();
 
 // 加载预测数据
 const loadPrediction = async () => {
-  loading.value = true
-  error.value = ''
+  loading.value = true;
+  error.value = "";
 
   try {
-    const response = await axios.get('/src/views/forkPrediction.json')
+    const response = await axios.get("/src/views/forkPrediction.json");
 
     if (response.data) {
-      const data = response.data
+      const data = response.data;
 
       // 提取数据
-      metadata.value = data.metadata
-      metrics.value = data.metadata.performance_metrics
-      predictions.value = data.predictions
-      featureImportance.value = data.feature_importance || []
-      
+      metadata.value = data.metadata;
+      metrics.value = data.metadata.performance_metrics;
+      predictions.value = data.predictions;
+      featureImportance.value = data.feature_importance || [];
+
       // 对预测结果按真实值降序排序
-      predictions.value.sort((a, b) => b.true_value - a.true_value)
-      topPredictions.value = predictions.value.slice(0, 20)
+      predictions.value.sort((a, b) => b.true_value - a.true_value);
+      topPredictions.value = predictions.value.slice(0, 20);
 
       // 先关闭 loading，让 DOM 渲染
-      loading.value = false
+      loading.value = false;
 
       // 等待 DOM 更新完成后再渲染图表
-      await nextTick()
-      renderCharts()
+      await nextTick();
+      renderCharts();
     } else {
-      error.value = t('common.loadFailed')
-      loading.value = false
+      error.value = t("common.loadFailed");
+      loading.value = false;
     }
   } catch (err: any) {
-    error.value = t('common.loadError') + ': ' + (err.message || t('common.unknownError'))
-    loading.value = false
+    error.value =
+      t("common.loadError") + ": " + (err.message || t("common.unknownError"));
+    loading.value = false;
   }
-}
+};
 
 // 渲染图表
 const renderCharts = () => {
-  renderFeatureImportance()
-  renderPredictionScatter()
-  renderErrorDistribution()
-}
+  renderFeatureImportance();
+  renderPredictionScatter();
+  renderErrorDistribution();
+};
 
 // 1. 特征重要性图
 const renderFeatureImportance = () => {
-  if (!featureImportanceRef.value) return
+  if (!featureImportanceRef.value) return;
 
-  const chart = echarts.init(featureImportanceRef.value)
-  const top10Features = featureImportance.value.slice(0, 10)
-
-  chart.setOption({
-    backgroundColor: 'transparent',
-    grid: { left: '15%', right: '10%', top: '10%', bottom: '10%' },
-    xAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#999' }
-    },
-    yAxis: {
-      type: 'category',
-      data: top10Features.map(f => f.feature_name || f.feature).reverse(),
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#fff' }
-    },
-    series: [{
-      type: 'bar',
-      data: top10Features.map(f => f.importance).reverse(),
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-          { offset: 0, color: '#00d4ff' },
-          { offset: 1, color: '#0066ff' }
-        ])
-      },
-      label: {
-        show: true,
-        position: 'right',
-        color: '#fff',
-        formatter: '{c}'
-      }
-    }]
-  })
-}
-
-// 2. 预测散点图
-const renderPredictionScatter = () => {
-  if (!predictionScatterRef.value) return
-
-  const chart = echarts.init(predictionScatterRef.value)
-  const scatterData = predictions.value.map(p => [p.true_value, p.predicted_value])
-  const maxVal = Math.max(...predictions.value.map(p => Math.max(p.true_value, p.predicted_value)))
+  const chart = echarts.init(featureImportanceRef.value);
+  const top10Features = featureImportance.value.slice(0, 10);
 
   chart.setOption({
-    backgroundColor: 'transparent',
-    grid: { left: '12%', right: '10%', top: '15%', bottom: '15%' },
+    backgroundColor: "transparent",
+    grid: { left: "15%", right: "10%", top: "10%", bottom: "10%" },
     xAxis: {
-      type: 'value',
-      name: t('pages.forkPrediction.actualValue'),
-      nameTextStyle: { color: '#fff' },
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#999' }
+      type: "value",
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#999" },
     },
     yAxis: {
-      type: 'value',
-      name: t('pages.forkPrediction.predictedValue'),
-      nameTextStyle: { color: '#fff' },
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#999' }
+      type: "category",
+      data: top10Features.map((f) => f.feature_name || f.feature).reverse(),
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#fff" },
     },
     series: [
       {
-        type: 'scatter',
+        type: "bar",
+        data: top10Features.map((f) => f.importance.toFixed(4)).reverse(),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            { offset: 0, color: "#00d4ff" },
+            { offset: 1, color: "#0066ff" },
+          ]),
+        },
+        label: {
+          show: true,
+          position: "right",
+          color: "#fff",
+          formatter: "{c}",
+        },
+      },
+    ],
+  });
+};
+
+// 2. 预测散点图
+const renderPredictionScatter = () => {
+  if (!predictionScatterRef.value) return;
+
+  const chart = echarts.init(predictionScatterRef.value);
+  const scatterData = predictions.value.map((p) => {
+    if (p.true_value < 2000) return [p.true_value, p.predicted_value];
+  });
+  const maxVal = Math.max(
+    ...predictions.value.map((p) => Math.max(p.true_value, p.predicted_value))
+  );
+
+  chart.setOption({
+    backgroundColor: "transparent",
+    grid: { left: "12%", right: "10%", top: "15%", bottom: "15%" },
+    xAxis: {
+      type: "value",
+      name: t("pages.forkPrediction.actualValue"),
+      nameTextStyle: { color: "#fff" },
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#999" },
+    },
+    yAxis: {
+      type: "value",
+      name: t("pages.forkPrediction.predictedValue"),
+      nameTextStyle: { color: "#fff" },
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#999" },
+    },
+    series: [
+      {
+        type: "scatter",
         data: scatterData,
         symbolSize: 8,
-        itemStyle: { color: '#00d4ff', opacity: 0.6 }
+        itemStyle: { color: "#00d4ff", opacity: 0.6 },
       },
       {
-        type: 'line',
-        data: [[0, 0], [maxVal, maxVal]],
-        lineStyle: { color: '#ff4444', type: 'dashed', width: 2 },
-        symbol: 'none',
-        silent: true
-      }
-    ]
-  })
-}
+        type: "line",
+        data: [
+          [0, 0],
+          [500, 500],
+        ],
+        lineStyle: { color: "#ff4444", type: "dashed", width: 2 },
+        symbol: "none",
+        silent: true,
+      },
+    ],
+  });
+};
 
 // 3. 误差分布图
 const renderErrorDistribution = () => {
-  if (!errorDistributionRef.value) return
+  if (!errorDistributionRef.value) return;
 
-  const chart = echarts.init(errorDistributionRef.value)
-  const errors = predictions.value.map(p => p.relative_error_percent)
+  const chart = echarts.init(errorDistributionRef.value);
+  const errors = predictions.value.map((p) => p.relative_error_percent);
 
   chart.setOption({
-    backgroundColor: 'transparent',
-    grid: { left: '10%', right: '10%', top: '15%', bottom: '15%' },
+    backgroundColor: "transparent",
+    grid: { left: "10%", right: "10%", top: "15%", bottom: "15%" },
+    tooltip: {
+      trigger: 'item',
+      formatter: (params: any) => {
+        const index = params.dataIndex;
+        const item = predictions.value[index];
+        return `
+          <strong>${item.project_name}</strong><br/>
+          ${t("pages.forkPrediction.actualValue")}: ${formatNumber(item.true_value)}<br/>
+          ${t("pages.forkPrediction.predictedValue")}: ${formatNumber(item.predicted_value)}<br/>
+          ${t("pages.forkPrediction.absoluteError")}: ${formatNumber(item.absolute_error)}<br/>
+          ${t("pages.forkPrediction.relativeError")}: ${formatNumber(item.relative_error_percent)}%
+        `;
+      }
+    },
     xAxis: {
-      type: 'category',
+      type: "category",
       data: predictions.value.map((_, i) => i + 1),
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#999', interval: 9 }
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#999", interval: 9 },
     },
     yAxis: {
-      type: 'value',
-      name: t('pages.forkPrediction.relativeError') + ' (%)',
-      nameTextStyle: { color: '#fff' },
-      axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#999' }
+      type: "value",
+      name: t("pages.forkPrediction.relativeError") + " (%)",
+      nameTextStyle: { color: "#fff" },
+      axisLine: { lineStyle: { color: "#333" } },
+      axisLabel: { color: "#999" },
     },
-    series: [{
-      type: 'bar',
-      data: errors,
-      itemStyle: {
-        color: (params: any) => {
-          const val = params.value
-          if (val < 5) return '#00ff88'
-          if (val < 10) return '#ffaa00'
-          return '#ff4444'
-        }
-      }
-    }]
-  })
-}
+    series: [
+      {
+        type: "bar",
+        data: errors,
+        itemStyle: {
+          color: (params: any) => {
+            const val = params.value;
+            if (val < 5) return "#00ff88";
+            if (val < 10) return "#ffaa00";
+            return "#ff4444";
+          },
+        },
+      },
+    ],
+  });
+};
 
 // 格式化数字（处理字符串和数值）
 const formatNumber = (value: any): string => {
-  if (value === null || value === undefined) return '0.00'
+  if (value === null || value === undefined) return "0.00";
 
   // 如果是字符串，尝试转换为数字
-  if (typeof value === 'string') {
-    const num = parseFloat(value)
-    if (isNaN(num)) return value // 如果无法转换，返回原字符串
-    return num.toFixed(2)
+  if (typeof value === "string") {
+    const num = parseFloat(value);
+    if (isNaN(num)) return value; // 如果无法转换，返回原字符串
+    return num.toFixed(2);
   }
 
   // 如果是数字，直接格式化
-  if (typeof value === 'number') {
-    return value.toFixed(2)
+  if (typeof value === "number") {
+    return value.toFixed(2);
   }
 
-  return String(value)
-}
+  return String(value);
+};
 
 // 误差等级样式
 const getErrorClass = (error: number) => {
-  if (error < 5) return 'error-low'
-  if (error < 10) return 'error-medium'
-  return 'error-high'
-}
+  if (error < 5) return "error-low";
+  if (error < 10) return "error-medium";
+  return "error-high";
+};
 
-const pageHeight = ref(window.innerHeight)
+const pageHeight = ref(window.innerHeight);
 // 更新页面高度
 const updatePageHeight = () => {
-  pageHeight.value = window.innerHeight
-}
+  pageHeight.value = window.innerHeight;
+};
 
 onMounted(() => {
-  loadPrediction()
-  window.addEventListener('resize', updatePageHeight)
-})
+  loadPrediction();
+  window.addEventListener("resize", updatePageHeight);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updatePageHeight)
-})
+  window.removeEventListener("resize", updatePageHeight);
+});
 </script>
 
 <style scoped>
@@ -367,7 +413,8 @@ onUnmounted(() => {
 }
 
 /* 加载和错误状态 */
-.loading-container, .error-container {
+.loading-container,
+.error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -385,10 +432,13 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.loading-text, .error-text {
+.loading-text,
+.error-text {
   margin-top: 20px;
   color: #999;
 }
