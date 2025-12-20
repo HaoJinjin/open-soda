@@ -1,8 +1,8 @@
 <template>
   <div class="response-time-prediction" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
-      <h1 class="page-title">⏱️ 响应时间预测</h1>
-      <p class="page-subtitle">Response Time Prediction - 基于 XGBoost 的响应时间预测与趋势分析</p>
+      <h1 class="page-title">⏱️ {{ $t('menu.responseTimePrediction') }}</h1>
+      <p class="page-subtitle">{{ $t('pages.responseTimePrediction.subtitle') }}</p>
     </header>
 
     <!-- 任务控制区 -->
@@ -12,7 +12,7 @@
         :disabled="taskStatus === 'running'"
         class="start-btn"
       >
-        {{ taskStatus === 'running' ? '预测中...' : '开始预测' }}
+        {{ taskStatus === 'running' ? $t('common.predicting') : $t('common.startPrediction') }}
       </button>
 
       <div v-if="taskStatus === 'running'" class="progress-container">
@@ -30,7 +30,7 @@
       </div>
 
       <div v-if="taskStatus === 'completed'" class="success-message">
-        ✅ 预测完成！
+        ✅ {{ $t('common.predictionCompleted') }}！
       </div>
     </div>
 
@@ -42,7 +42,7 @@
           <div class="metric-icon">🎯</div>
           <div class="metric-content">
             <div class="metric-value">{{ result.model_evaluation.XGBoost.r2_train }}</div>
-            <div class="metric-label">R² 训练集</div>
+            <div class="metric-label">R² {{ $t('pages.responseTimePrediction.trainSet') }}</div>
           </div>
         </div>
         <div class="metric-card">
@@ -63,7 +63,7 @@
           <div class="metric-icon">🔢</div>
           <div class="metric-content">
             <div class="metric-value">{{ result.metadata.valid_samples }}</div>
-            <div class="metric-label">有效样本数</div>
+            <div class="metric-label">{{ $t('pages.responseTimePrediction.validSamples') }}</div>
           </div>
         </div>
       </div>
@@ -72,32 +72,32 @@
       <div class="charts-container">
         <!-- 历史趋势 + 未来预测 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📈 响应时间历史趋势与未来预测</h3>
+          <h3 class="chart-title">📈 {{ $t('pages.responseTimePrediction.historyAndFuture') }}</h3>
           <div ref="trendPredictionRef" class="chart"></div>
         </div>
 
         <!-- 模型性能对比 -->
         <div class="chart-box">
-          <h3 class="chart-title">🏆 模型性能对比</h3>
+          <h3 class="chart-title">🏆 {{ $t('pages.responseTimePrediction.modelPerformance') }}</h3>
           <div ref="modelComparisonRef" class="chart"></div>
         </div>
 
         <!-- 交叉验证结果 -->
         <div class="chart-box">
-          <h3 class="chart-title">📊 交叉验证结果</h3>
+          <h3 class="chart-title">📊 {{ $t('pages.responseTimePrediction.crossValidation') }}</h3>
           <div ref="cvResultsRef" class="chart"></div>
         </div>
 
         <!-- 未来预测详情表格 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">🔮 未来6个月预测详情</h3>
+          <h3 class="chart-title">🔮 {{ $t('pages.responseTimePrediction.futurePredictionDetails') }}</h3>
           <div class="table-container">
             <table class="prediction-table">
               <thead>
                 <tr>
-                  <th>时间点</th>
-                  <th>预测响应时间</th>
-                  <th>趋势</th>
+                  <th>{{ $t('pages.responseTimePrediction.timePoint') }}</th>
+                  <th>{{ $t('pages.responseTimePrediction.predictedResponseTime') }}</th>
+                  <th>{{ $t('pages.responseTimePrediction.trend') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -119,7 +119,7 @@
 
         <!-- 模型参数 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">⚙️ 最优模型参数</h3>
+          <h3 class="chart-title">⚙️ {{ $t('pages.responseTimePrediction.optimalParameters') }}</h3>
           <div class="params-grid">
             <div 
               v-for="(value, key) in result.model_evaluation.XGBoost.best_params" 
@@ -140,6 +140,9 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const taskStatus = ref('idle') // idle, running, completed, error
@@ -166,17 +169,17 @@ const startPrediction = async () => {
     if (response.data.success) {
       taskStatus.value = 'running'
       progress.value = 0
-      statusMessage.value = '任务已启动...'
+      statusMessage.value = t('common.taskStarted')
 
       // 开始轮询
       startPolling()
     } else {
-      errorMessage.value = response.data.message || '启动失败'
+      errorMessage.value = response.data.message || t('common.startFailed')
       taskStatus.value = 'error'
     }
   } catch (err: any) {
     // 后端不可用，读取本地默认数据
-    console.warn('请求错误')
+    console.warn(t('common.requestError'))
   }
 }
 
@@ -198,11 +201,11 @@ const startPolling = () => {
           await loadResult()
         } else if (data.status === 'error') {
           stopPolling()
-          errorMessage.value = data.error || '预测失败'
+          errorMessage.value = data.error || t('common.predictionFailed')
         }
       }
     } catch (err: any) {
-      console.error('轮询错误:', err)
+      console.error(t('common.pollingError') + ':', err)
     }
   }, 2000) // 每2秒轮询一次
 }
@@ -231,7 +234,7 @@ const loadResult = async () => {
     }
   } catch (err: any) {
     // 后端不可用，尝试加载本地默认数据
-    console.warn('加载结果失败')
+    console.warn(t('common.loadResultFailed'))
   }
 }
 
@@ -267,7 +270,7 @@ const renderTrendPrediction = () => {
       axisPointer: { type: 'cross' }
     },
     legend: {
-      data: ['历史数据', '未来预测'],
+      data: [t('pages.responseTimePrediction.historicalData'), t('pages.responseTimePrediction.futurePrediction')],
       textStyle: { color: '#fff' },
       top: '5%'
     },
@@ -289,7 +292,7 @@ const renderTrendPrediction = () => {
     },
     yAxis: {
       type: 'value',
-      name: '响应时间',
+      name: t('pages.responseTimePrediction.responseTime'),
       nameTextStyle: { color: '#fff' },
       axisLabel: { color: '#999' },
       axisLine: { lineStyle: { color: '#333' } },
@@ -297,7 +300,7 @@ const renderTrendPrediction = () => {
     },
     series: [
       {
-        name: '历史数据',
+        name: t('pages.responseTimePrediction.historicalData'),
         type: 'line',
         data: historicalData,
         smooth: true,
@@ -310,7 +313,7 @@ const renderTrendPrediction = () => {
         }
       },
       {
-        name: '未来预测',
+        name: t('pages.responseTimePrediction.futurePrediction'),
         type: 'line',
         data: futureData,
         smooth: true,
@@ -475,10 +478,11 @@ const getTrendText = (index: number) => {
   const previous = result.value.future_prediction.predicted_response_time[index - 1]
   const change = ((current - previous) / previous * 100).toFixed(2)
 
-  if (current > previous) return `上升 ${change}%`
-  if (current < previous) return `下降 ${Math.abs(parseFloat(change))}%`
-  return '持平'
+  if (current > previous) return t('pages.responseTimePrediction.increase') + ` ${change}%`
+  if (current < previous) return t('pages.responseTimePrediction.decrease') + ` ${Math.abs(parseFloat(change))}%`
+  return t('pages.responseTimePrediction.stable')
 }
+
 const pageHeight = ref(window.innerHeight)
 // 更新页面高度
 const updatePageHeight = () => {
@@ -492,14 +496,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   stopPolling()
-    window.removeEventListener('resize', updatePageHeight)
+  window.removeEventListener('resize', updatePageHeight)
 })
 </script>
 
 <style scoped>
 .response-time-prediction {
   box-sizing: border-box;
-    overflow-y: auto;
+  overflow-y: auto;
   width: 100%;
   padding: 20px;
   background: #000;
@@ -774,6 +778,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
-
-

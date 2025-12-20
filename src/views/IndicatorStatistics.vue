@@ -1,21 +1,21 @@
 <template>
   <div class="indicator-statistics" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
-      <h1 class="page-title">📊 指标统计分析</h1>
-      <p class="page-subtitle">Indicator Statistics - 6大核心指标深度分析</p>
+      <h1 class="page-title">📊 {{ $t('menu.indicatorStatistics') }}</h1>
+      <p class="page-subtitle">{{ $t('pages.indicatorStatistics.subtitle') }}</p>
     </header>
 
     <!-- 加载状态 -->
     <div v-if="loading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p class="loading-text">正在加载统计数据...</p>
+      <p class="loading-text">{{ $t('common.loadingData') }}...</p>
     </div>
 
     <!-- 错误提示 -->
     <div v-else-if="error" class="error-container">
       <div class="error-icon">⚠️</div>
       <p class="error-text">{{ error }}</p>
-      <button @click="loadStatistics" class="retry-btn">重试</button>
+      <button @click="loadStatistics" class="retry-btn">{{ $t('common.retry') }}</button>
     </div>
 
     <!-- 主内容 -->
@@ -26,28 +26,28 @@
           <div class="metric-icon">📁</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.total_projects }}</div>
-            <div class="metric-label">总项目数</div>
+            <div class="metric-label">{{ $t('pages.indicatorStatistics.totalProjects') }}</div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">✅</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.valid_projects }}</div>
-            <div class="metric-label">有效项目数</div>
+            <div class="metric-label">{{ $t('pages.indicatorStatistics.validProjects') }}</div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">📉</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.missing_data_ratio }}</div>
-            <div class="metric-label">缺失率</div>
+            <div class="metric-label">{{ $t('pages.indicatorStatistics.missingRate') }}</div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">🎯</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.analysis_indicators?.length || 0 }}</div>
-            <div class="metric-label">分析指标数</div>
+            <div class="metric-label">{{ $t('pages.indicatorStatistics.analyzedIndicators') }}</div>
           </div>
         </div>
       </div>
@@ -56,38 +56,38 @@
       <div class="charts-container">
         <!-- 相关性热力图 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">🔥 指标相关性热力图</h3>
+          <h3 class="chart-title">🔥 {{ $t('pages.indicatorStatistics.correlationHeatmap') }}</h3>
           <div ref="heatmapRef" class="chart"></div>
         </div>
 
         <!-- 指标分布图 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📊 指标统计分布（基于 {{ projectsDetail.length }} 个项目的实际数据）</h3>
+          <h3 class="chart-title">📊 {{ $t('pages.indicatorStatistics.indicatorDistribution', { count: projectsDetail.length }) }}</h3>
           <div ref="distributionRef" class="chart-distribution"></div>
         </div>
 
         <!-- Top10 项目对比图 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">🏆 Top 10 项目指标对比</h3>
+          <h3 class="chart-title">🏆 {{ $t('pages.indicatorStatistics.top10Projects') }}</h3>
           <div ref="top10ComparisonRef" class="chart"></div>
         </div>
 
         <!-- 指标详细统计表格 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📋 指标详细统计</h3>
+          <h3 class="chart-title">📋 {{ $t('pages.indicatorStatistics.detailedStats') }}</h3>
           <div class="table-container">
             <table class="stats-table">
               <thead>
                 <tr>
-                  <th>指标名称</th>
-                  <th>平均值</th>
-                  <th>中位数</th>
-                  <th>标准差</th>
-                  <th>最小值</th>
-                  <th>最大值</th>
-                  <th>25%分位</th>
-                  <th>75%分位</th>
-                  <th>95%分位</th>
+                  <th>{{ $t('pages.indicatorStatistics.indicatorName') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.average') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.median') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.stdDeviation') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.minValue') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.maxValue') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.percentile25') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.percentile75') }}</th>
+                  <th>{{ $t('pages.indicatorStatistics.percentile95') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,6 +115,9 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const loading = ref(true)
@@ -154,16 +157,16 @@ const loadStatistics = async () => {
       await nextTick()
       renderCharts()
     } else {
-      error.value = '加载失败：服务器返回 success=false'
+      error.value = t('common.loadFailed')
       loading.value = false
     }
   } catch (err: any) {
     if (err.response) {
-      error.value = `服务器错误 (${err.response.status}): ${err.response.data?.message || err.message}`
+      error.value = `${t('common.serverError')} (${err.response.status}): ${err.response.data?.message || err.message}`
     } else if (err.request) {
-      error.value = '无法连接到后端服务，请确保后端已启动 (http://localhost:8000)'
+      error.value = t('common.backendConnectionError')
     } else {
-      error.value = err.message || '未知错误'
+      error.value = err.message || t('common.unknownError')
     }
     loading.value = false
   }
@@ -188,12 +191,12 @@ const renderHeatmap = () => {
   const indicators = Object.keys(correlationMatrix.value)
 
   const indicatorNames: any = {
-    'inactive_contributors': '非活跃贡献者',
-    'issues_and_change_request_active': '活跃工单/PR',
-    'issues_closed': '已关闭工单',
-    'issues_new': '新增工单',
-    'new_contributors': '新贡献者',
-    'participants': '参与者总数'
+    'inactive_contributors': t('pages.indicatorStatistics.inactiveContributors'),
+    'issues_and_change_request_active': t('pages.indicatorStatistics.activeIssuesPR'),
+    'issues_closed': t('pages.indicatorStatistics.closedIssues'),
+    'issues_new': t('pages.indicatorStatistics.newIssues'),
+    'new_contributors': t('pages.indicatorStatistics.newContributors'),
+    'participants': t('pages.indicatorStatistics.totalParticipants')
   }
 
   // ✅ 只保留下三角数据（i >= j），避免重复
@@ -214,7 +217,7 @@ const renderHeatmap = () => {
     tooltip: {
       position: 'top',
       formatter: (params: any) => {
-        return `${indicatorNames[indicators[params.data[1]]]} <br/> ${indicatorNames[indicators[params.data[0]]]} <br/> 相关系数: ${params.data[2]}`
+        return `${indicatorNames[indicators[params.data[1]]]} <br/> ${indicatorNames[indicators[params.data[0]]]} <br/> ${t('pages.indicatorStatistics.correlation')}: ${params.data[2]}`
       }
     },
     grid: {
@@ -277,12 +280,12 @@ const renderDistribution = () => {
   const chart = echarts.init(distributionRef.value)
 
   const indicatorNames: any = {
-    'inactive_contributors': '非活跃贡献者',
-    'issues_and_change_request_active': '活跃工单/PR',
-    'issues_closed': '已关闭工单',
-    'issues_new': '新增工单',
-    'new_contributors': '新贡献者',
-    'participants': '参与者总数'
+    'inactive_contributors': t('pages.indicatorStatistics.inactiveContributors'),
+    'issues_and_change_request_active': t('pages.indicatorStatistics.activeIssuesPR'),
+    'issues_closed': t('pages.indicatorStatistics.closedIssues'),
+    'issues_new': t('pages.indicatorStatistics.newIssues'),
+    'new_contributors': t('pages.indicatorStatistics.newContributors'),
+    'participants': t('pages.indicatorStatistics.totalParticipants')
   }
 
   const indicators = metadata.value.analysis_indicators || []
@@ -418,25 +421,25 @@ const renderDistribution = () => {
         silent: true,  // 不响应鼠标事件
         data: [
           {
-            name: '均值',
+            name: t('pages.indicatorStatistics.mean'),
             xAxis: Math.floor((s.mean - s.minVal) / s.binWidth),
             lineStyle: { color: '#ff4444', type: 'dashed', width: 2 },
             label: {
               show: true,
               position: 'end',
-              formatter: '均值',
+              formatter: t('pages.indicatorStatistics.mean'),
               color: '#ff4444',
               fontSize: 10
             }
           },
           {
-            name: '中位数',
+            name: t('pages.indicatorStatistics.median'),
             xAxis: Math.floor((s.median - s.minVal) / s.binWidth),
             lineStyle: { color: '#4444ff', type: 'dashed', width: 2 },
             label: {
               show: true,
               position: 'end',
-              formatter: '中位数',
+              formatter: t('pages.indicatorStatistics.median'),
               color: '#4444ff',
               fontSize: 10
             }
@@ -458,7 +461,7 @@ const renderDistribution = () => {
       formatter: (params: any) => {
         if (!params || params.length === 0) return ''
         const param = params[0]
-        return `${param.seriesName}<br/>频次: ${param.value}`
+        return `${param.seriesName}<br/>${t('pages.indicatorStatistics.frequency')}: ${param.value}`
       }
     },
     grid: grids,
@@ -475,12 +478,12 @@ const renderTop10Comparison = () => {
   const chart = echarts.init(top10ComparisonRef.value)
   const indicators = metadata.value.analysis_indicators || []
   const indicatorNames: any = {
-    'inactive_contributors': '非活跃贡献者',
-    'issues_and_change_request_active': '活跃工单/PR',
-    'issues_closed': '已关闭工单',
-    'issues_new': '新增工单',
-    'new_contributors': '新贡献者',
-    'participants': '参与者总数'
+    'inactive_contributors': t('pages.indicatorStatistics.inactiveContributors'),
+    'issues_and_change_request_active': t('pages.indicatorStatistics.activeIssuesPR'),
+    'issues_closed': t('pages.indicatorStatistics.closedIssues'),
+    'issues_new': t('pages.indicatorStatistics.newIssues'),
+    'new_contributors': t('pages.indicatorStatistics.newContributors'),
+    'participants': t('pages.indicatorStatistics.totalParticipants')
   }
 
   chart.setOption({
@@ -513,7 +516,7 @@ const renderTop10Comparison = () => {
     },
     yAxis: {
       type: 'value',
-      name: '标准化值',
+      name: t('pages.indicatorStatistics.normalizedValue'),
       nameTextStyle: { color: '#fff' },
       axisLabel: { color: '#999' },
       axisLine: { lineStyle: { color: '#333' } },
@@ -573,7 +576,7 @@ onUnmounted(() => {
 <style scoped>
 .indicator-statistics {
   width: 100%;
-      overflow-y: auto;
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 20px;
   background: #000;
@@ -756,5 +759,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
-

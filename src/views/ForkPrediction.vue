@@ -1,21 +1,21 @@
 <template>
   <div class="fork-prediction" :style="{ height: pageHeight + 'px' }">
     <header class="page-header">
-      <h1 class="page-title">🔱 Fork 数量预测</h1>
-      <p class="page-subtitle">Fork Prediction - 多模型对比预测（{{ metadata.model_used || '加载中...' }}）</p>
+      <h1 class="page-title">🔱 {{ $t('menu.forkPrediction') }}</h1>
+      <p class="page-subtitle">{{ $t('pages.forkPrediction.subtitle') }}（{{ metadata.model_used || $t('common.loading') }}）</p>
     </header>
 
     <!-- 加载状态 -->
     <div v-if="loading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p class="loading-text">正在加载预测数据...</p>
+      <p class="loading-text">{{ $t('common.loadingData') }}...</p>
     </div>
 
     <!-- 错误提示 -->
     <div v-else-if="error" class="error-container">
       <div class="error-icon">⚠️</div>
       <p class="error-text">{{ error }}</p>
-      <button @click="loadPrediction" class="retry-btn">重试</button>
+      <button @click="loadPrediction" class="retry-btn">{{ $t('common.retry') }}</button>
     </div>
 
     <!-- 主内容 -->
@@ -25,21 +25,21 @@
         <div class="metric-card">
           <div class="metric-icon">🎯</div>
           <div class="metric-content">
-            <div class="metric-value">{{ metrics.R2_score }}</div>
-            <div class="metric-label">R² 分数</div>
+            <div class="metric-value">{{ formatNumber(metrics.R2_test) }}</div>
+            <div class="metric-label">R² {{ $t('pages.forkPrediction.score') }}</div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">📊</div>
           <div class="metric-content">
-            <div class="metric-value">{{ metrics.RMSE }}</div>
+            <div class="metric-value">{{ formatNumber(metrics.RMSE_test) }}</div>
             <div class="metric-label">RMSE</div>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon">📈</div>
           <div class="metric-content">
-            <div class="metric-value">{{ metrics.MAE }}</div>
+            <div class="metric-value">{{ formatNumber(metrics.MAE_test) }}</div>
             <div class="metric-label">MAE</div>
           </div>
         </div>
@@ -47,7 +47,7 @@
           <div class="metric-icon">🔢</div>
           <div class="metric-content">
             <div class="metric-value">{{ metadata.valid_samples }}</div>
-            <div class="metric-label">有效样本数</div>
+            <div class="metric-label">{{ $t('pages.forkPrediction.validSamples') }}</div>
           </div>
         </div>
       </div>
@@ -56,35 +56,35 @@
       <div class="charts-container">
         <!-- 特征重要性图 -->
         <div class="chart-box">
-          <h3 class="chart-title">🎯 特征重要性排名</h3>
+          <h3 class="chart-title">🎯 {{ $t('pages.forkPrediction.featureImportance') }}</h3>
           <div ref="featureImportanceRef" class="chart"></div>
         </div>
 
         <!-- 预测结果散点图 -->
         <div class="chart-box">
-          <h3 class="chart-title">📊 预测值 vs 真实值</h3>
+          <h3 class="chart-title">📊 {{ $t('pages.forkPrediction.predictedVsActual') }}</h3>
           <div ref="predictionScatterRef" class="chart"></div>
         </div>
 
         <!-- 预测误差分布 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📉 预测误差分布</h3>
+          <h3 class="chart-title">📉 {{ $t('pages.forkPrediction.errorDistribution') }}</h3>
           <div ref="errorDistributionRef" class="chart"></div>
         </div>
 
         <!-- 预测结果表格 -->
         <div class="chart-box full-width">
-          <h3 class="chart-title">📋 预测结果详情（Top 20）</h3>
+          <h3 class="chart-title">📋 {{ $t('pages.forkPrediction.predictionDetails') }}（Top 20）</h3>
           <div class="table-container">
             <table class="prediction-table">
               <thead>
                 <tr>
-                  <th>排名</th>
-                  <th>项目名称</th>
-                  <th>真实值</th>
-                  <th>预测值</th>
-                  <th>绝对误差</th>
-                  <th>相对误差</th>
+                  <th>{{ $t('pages.forkPrediction.rank') }}</th>
+                  <th>{{ $t('pages.forkPrediction.projectName') }}</th>
+                  <th>{{ $t('pages.forkPrediction.actualValue') }}</th>
+                  <th>{{ $t('pages.forkPrediction.predictedValue') }}</th>
+                  <th>{{ $t('pages.forkPrediction.absoluteError') }}</th>
+                  <th>{{ $t('pages.forkPrediction.relativeError') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,6 +111,9 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const loading = ref(true)
@@ -132,16 +135,19 @@ const loadPrediction = async () => {
   error.value = ''
 
   try {
-    const response = await axios.post('http://localhost:8000/api/predict/fork')
+    const response = await axios.get('/src/views/forkPrediction.json')
 
-    if (response.data.success) {
-      const data = response.data.data
+    if (response.data) {
+      const data = response.data
 
       // 提取数据
-      metadata.value = data.predictions.metadata
-      metrics.value = data.predictions.metadata.metrics
-      predictions.value = data.predictions.predictions
-      featureImportance.value = data.feature_importance.feature_importance
+      metadata.value = data.metadata
+      metrics.value = data.metadata.performance_metrics
+      predictions.value = data.predictions
+      featureImportance.value = data.feature_importance || []
+      
+      // 对预测结果按真实值降序排序
+      predictions.value.sort((a, b) => b.true_value - a.true_value)
       topPredictions.value = predictions.value.slice(0, 20)
 
       // 先关闭 loading，让 DOM 渲染
@@ -151,17 +157,11 @@ const loadPrediction = async () => {
       await nextTick()
       renderCharts()
     } else {
-      error.value = '加载失败：服务器返回 success=false'
+      error.value = t('common.loadFailed')
       loading.value = false
     }
   } catch (err: any) {
-    if (err.response) {
-      error.value = `服务器错误 (${err.response.status}): ${err.response.data?.message || err.message}`
-    } else if (err.request) {
-      error.value = '无法连接到后端服务，请确保后端已启动 (http://localhost:8000)'
-    } else {
-      error.value = err.message || '未知错误'
-    }
+    error.value = t('common.loadError') + ': ' + (err.message || t('common.unknownError'))
     loading.value = false
   }
 }
@@ -190,7 +190,7 @@ const renderFeatureImportance = () => {
     },
     yAxis: {
       type: 'category',
-      data: top10Features.map(f => f.feature_name).reverse(),
+      data: top10Features.map(f => f.feature_name || f.feature).reverse(),
       axisLine: { lineStyle: { color: '#333' } },
       axisLabel: { color: '#fff' }
     },
@@ -226,14 +226,14 @@ const renderPredictionScatter = () => {
     grid: { left: '12%', right: '10%', top: '15%', bottom: '15%' },
     xAxis: {
       type: 'value',
-      name: '真实值',
+      name: t('pages.forkPrediction.actualValue'),
       nameTextStyle: { color: '#fff' },
       axisLine: { lineStyle: { color: '#333' } },
       axisLabel: { color: '#999' }
     },
     yAxis: {
       type: 'value',
-      name: '预测值',
+      name: t('pages.forkPrediction.predictedValue'),
       nameTextStyle: { color: '#fff' },
       axisLine: { lineStyle: { color: '#333' } },
       axisLabel: { color: '#999' }
@@ -274,7 +274,7 @@ const renderErrorDistribution = () => {
     },
     yAxis: {
       type: 'value',
-      name: '相对误差 (%)',
+      name: t('pages.forkPrediction.relativeError') + ' (%)',
       nameTextStyle: { color: '#fff' },
       axisLine: { lineStyle: { color: '#333' } },
       axisLabel: { color: '#999' }
@@ -328,7 +328,7 @@ const updatePageHeight = () => {
 
 onMounted(() => {
   loadPrediction()
-   window.addEventListener('resize', updatePageHeight)
+  window.addEventListener('resize', updatePageHeight)
 })
 
 onUnmounted(() => {
@@ -339,11 +339,10 @@ onUnmounted(() => {
 <style scoped>
 .fork-prediction {
   width: 100%;
-      overflow-y: auto;
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 20px;
   background: #000;
-  /* min-height: 100vh; */
   color: #fff;
 }
 
@@ -531,5 +530,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
-
